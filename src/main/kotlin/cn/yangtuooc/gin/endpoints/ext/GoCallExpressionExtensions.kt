@@ -14,6 +14,10 @@ fun GoCallExpr.receiver(): String {
     return this.argumentList.expressionList.lastOrNull()?.text ?: ""
 }
 
+fun GoCallExpr.receiverReference(): GoReferenceExpression {
+    return this.argumentList.expressionList.lastOrNull() as GoReferenceExpression
+}
+
 fun GoCallExpr.requestType(): String {
     return this.expression.lastChild.text
 }

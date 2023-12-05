@@ -19,8 +19,7 @@ class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
         FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
     override fun getEndpointData(group: GinRoute, endpoint: GinRoute, dataId: String): Any? {
-        TODO("Not yet implemented")
-
+        return endpoint.getFunctionDeclaration()
     }
 
     override fun getStatus(project: Project): Status {
