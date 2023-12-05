@@ -1,0 +1,2 @@
+# gin-endpoints
+GoLand Plugin
