@@ -9,7 +9,7 @@
   ]]></description>
 
   <dependencies>
-    <plugin id="com.intellij.modules.go"/>
+    <plugin id="org.jetbrains.plugins.go"/>
     <plugin id="com.intellij.modules.microservices"/>
     <plugin id="com.intellij.modules.ultimate"/>
   </dependencies>

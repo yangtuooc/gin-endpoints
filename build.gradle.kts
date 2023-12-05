@@ -14,11 +14,11 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2.5")
+    version.set("2023.2.2")
     type.set("GO") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */
-       "org.jetbrains.plugins.go:222.4459.16"
+       "org.jetbrains.plugins.go:232.9921.28"
     ))
 }
 

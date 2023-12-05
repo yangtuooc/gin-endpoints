@@ -6,8 +6,9 @@ import com.intellij.psi.PsiAnchor
  * @author yangtuo
  */
 class GinRoute(
-    val urlMapping: String,
-    val locationString: String,
+    val path: String,
+    val requestType: String,
+    val receiver: String,
     private val anchor: PsiAnchor
 ) {
     fun isValid(): Boolean = anchor.retrieve() != null
