@@ -1,20 +1,13 @@
 package cn.yangtuooc.gin.endpoints
 
-import com.goide.psi.GoCallExpr
-import com.goide.psi.impl.GoItemPresentation
-import com.goide.psi.impl.GoPsiUtil
-import com.goide.psi.presentation.GoPsiPresentationFunction
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
-import com.intellij.microservices.endpoints.presentation.HttpUrlPresentation
 import com.intellij.microservices.url.UrlPath
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
-import com.intellij.psi.PsiAnchor
 import com.intellij.psi.PsiManager
-import javax.swing.Icon
 
 /**
  * @author yangtuo
@@ -31,13 +24,13 @@ class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
     }
 
     override fun getStatus(project: Project): Status {
-        if (hasGinFlow(project)) return Status.HAS_ENDPOINTS
+        if (hasImportsGin(project)) return Status.HAS_ENDPOINTS
         return Status.UNAVAILABLE
     }
 
     override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GinRoute> {
         if (filter !is ModuleEndpointsFilter) return emptyList()
-        if (!hasGinFlow(filter.module)) return emptyList()
+        if (!hasImportsGin(filter.module)) return emptyList()
         return findGinRoutes(project, filter.searchScope)
     }
 

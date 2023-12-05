@@ -1,4 +1,4 @@
-package cn.yangtuooc.gin.endpoints
+package cn.yangtuooc.gin.endpoints.ext
 
 import com.goide.psi.GoCallExpr
 import com.goide.psi.GoFile
