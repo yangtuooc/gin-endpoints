@@ -3,7 +3,6 @@ package cn.yangtuooc.gin.endpoints
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
-import com.intellij.microservices.url.UrlPath
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
@@ -43,27 +42,10 @@ class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
     }
 
     override fun isValidEndpoint(group: GinRoute, endpoint: GinRoute): Boolean {
-        return group.isValid()
+        return endpoint.isValid()
     }
 
     override fun getEndpointPresentation(group: GinRoute, endpoint: GinRoute): ItemPresentation {
         return HttpMethodPresentation(group.path, group.requestType, group.receiver, GinEndpointsIcons.GIN_LOGO)
     }
-
-    private fun normalizeUrl(urlMapping: String): String {
-        val urlString = run {
-            if (urlMapping.isBlank()) return@run "/"
-            if (!urlMapping.startsWith("/")) return@run "/$urlMapping"
-            return@run urlMapping
-        }
-//        return parseGinUrlMapping(urlString).getPresentation(GinUrlRenderer)
-        return urlString
-    }
-
-    private object GinUrlRenderer : UrlPath.PathSegmentRenderer {
-        override fun visitVariable(variable: UrlPath.PathSegment.Variable): String {
-            return "{${variable.variableName}}"
-        }
-    }
-
 }

@@ -15,11 +15,8 @@
   </dependencies>
 
   <extensions defaultExtensionNs="com.intellij">
-    <psi.referenceContributor language="go" implementation="cn.yangtuooc.gin.endpoints.GinReferenceContributor"/>
     <microservices.endpointsProvider implementation="cn.yangtuooc.gin.endpoints.GinEndpointsProvider"/>
-    <microservices.urlResolverFactory implementation="cn.yangtuooc.gin.endpoints.GinUrlResolverFactory"/>
     <dependencySupport kind="go" coordinate="github.com/gin-gonic/gin" displayName="Gin Framework"/>
-    <implicitUsageProvider implementation="cn.yangtuooc.gin.endpoints.GinImplicitUsageProvider"/>
   </extensions>
 
 </idea-plugin>
