@@ -17,10 +17,21 @@ intellij {
     version.set("2023.2.2")
     type.set("GO") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */
-       "org.jetbrains.plugins.go:232.9921.28"
-    ))
+    plugins.set(
+        listOf(/* Plugin Dependencies */
+            "org.jetbrains.plugins.go:232.9921.28",
+            "com.intellij.spring.mvc:232.8660.142"
+        )
+    )
 }
+
+idea{
+    module{
+        isDownloadSources = true
+        isDownloadJavadoc = true
+    }
+}
+
 
 tasks {
     // Set the JVM compatibility versions

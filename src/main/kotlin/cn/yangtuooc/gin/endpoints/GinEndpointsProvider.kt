@@ -1,36 +1,31 @@
 package cn.yangtuooc.gin.endpoints
 
 import com.intellij.microservices.endpoints.*
-import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
-import com.intellij.microservices.url.UrlPath
+import com.intellij.microservices.url.UrlTargetInfo
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
 
 /**
  * @author yangtuo
  */
-class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
+class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlMappingElement> {
 
     override val endpointType: EndpointType = HTTP_SERVER_TYPE
     override val presentation: FrameworkPresentation =
         FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
-    override fun getEndpointData(group: GinRoute, endpoint: GinRoute, dataId: String): Any? {
-        return endpoint.getFunctionDeclaration()
-    }
+    override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GinRoutePointer> {
+        if (filter is ModuleEndpointsFilter) {
+            val module = filter.module
+            if (!hasGinLibrary(module)) return emptySet()
 
-    override fun getStatus(project: Project): Status {
-        if (hasImportsGin(project)) return Status.HAS_ENDPOINTS
-        return Status.UNAVAILABLE
-    }
-
-    override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GinRoute> {
-        if (filter !is ModuleEndpointsFilter) return emptyList()
-        if (!hasImportsGin(filter.module)) return emptyList()
-        return findGinRoutes(project, filter.searchScope)
+            return findGinRoutes(module)
+        }
+        return emptySet()
     }
 
 
@@ -38,32 +33,37 @@ class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
         return PsiManager.getInstance(project).modificationTracker
     }
 
-    override fun getEndpoints(group: GinRoute): Iterable<GinRoute> {
-        return listOf(group)
+    override fun getStatus(project: Project): EndpointsProvider.Status {
+        if (hasGinLibrary(project)) return EndpointsProvider.Status.HAS_ENDPOINTS
+        return EndpointsProvider.Status.UNAVAILABLE
     }
 
-    override fun isValidEndpoint(group: GinRoute, endpoint: GinRoute): Boolean {
-        return group.isValid()
+    override fun getUrlTargetInfo(group: GinRoutePointer, endpoint: GinUrlMappingElement): Iterable<UrlTargetInfo> {
+        val targetInfo = findUrlTargetInfo(group, endpoint)
+        return listOf(targetInfo)
     }
 
-    override fun getEndpointPresentation(group: GinRoute, endpoint: GinRoute): ItemPresentation {
-        return HttpMethodPresentation(group.path, group.requestType, group.receiver, GinEndpointsIcons.GIN_LOGO)
+    override fun isValidEndpoint(group: GinRoutePointer, endpoint: GinUrlMappingElement): Boolean {
+        return endpoint.getNavigationTarget()?.isValid == true
     }
 
-    private fun normalizeUrl(urlMapping: String): String {
-        val urlString = run {
-            if (urlMapping.isBlank()) return@run "/"
-            if (!urlMapping.startsWith("/")) return@run "/$urlMapping"
-            return@run urlMapping
-        }
-//        return parseGinUrlMapping(urlString).getPresentation(GinUrlRenderer)
-        return urlString
+    override fun getEndpoints(group: GinRoutePointer): Iterable<GinUrlMappingElement> {
+        return listOf(GinRoutePointerUrlMappingElement(group))
     }
 
-    private object GinUrlRenderer : UrlPath.PathSegmentRenderer {
-        override fun visitVariable(variable: UrlPath.PathSegment.Variable): String {
-            return "{${variable.variableName}}"
-        }
+    override fun getEndpointPresentation(group: GinRoutePointer, endpoint: GinUrlMappingElement): ItemPresentation {
+        val httpUrl = endpoint.getURL()
+        val httpMethods = endpoint.getMethod().map { it.name }.toList()
+
+        return HttpMethodPresentation(httpUrl, httpMethods, group.getLocationString(), GinEndpointsIcons.GIN_LOGO)
     }
 
+    private fun findUrlTargetInfo(group: GinRoutePointer, endpoint: GinUrlMappingElement): UrlTargetInfo {
+        val mapping = GinRoutePointerUrlMappingElement(group)
+        return GinUrlTargetInfo(listOf("http://", "https://"), listOf(), mapping)
+    }
+
+    override fun getDocumentationElement(group: GinRoutePointer, endpoint: GinUrlMappingElement): PsiElement? {
+        return endpoint.getDocumentationPsiElement()
+    }
 }
