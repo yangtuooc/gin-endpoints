@@ -5,6 +5,8 @@ import cn.yangtuooc.gin.endpoints.ext.path
 import cn.yangtuooc.gin.endpoints.ext.receiverReference
 import cn.yangtuooc.gin.endpoints.ext.requestType
 import com.goide.psi.GoCallExpr
+import com.goide.psi.GoFunctionLit
+import com.goide.psi.GoReferenceExpression
 import com.intellij.psi.PsiElement
 
 /**
@@ -17,7 +19,11 @@ class GinRoutePointer(private val expr: GoCallExpr) {
     }
 
     fun getNavigationTarget(): PsiElement? {
-        return expr.receiverReference().resolve()
+        return when (val reference = expr.receiverReference()) {
+            is GoReferenceExpression -> reference.resolve()
+            is GoFunctionLit -> reference
+            else -> null
+        }
     }
 
     fun getURL(): String {
