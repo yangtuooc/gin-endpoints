@@ -1,9 +1,6 @@
 package cn.yangtuooc.gin.endpoints.ext
 
-import com.goide.psi.GoCallExpr
-import com.goide.psi.GoFile
-import com.goide.psi.GoReferenceExpression
-import com.goide.psi.GoVarDefinition
+import com.goide.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 
 /**
@@ -14,8 +11,8 @@ fun GoCallExpr.getLocationString(): String {
     return this.argumentList.expressionList.lastOrNull()?.text ?: ""
 }
 
-fun GoCallExpr.receiverReference(): GoReferenceExpression {
-    return this.argumentList.expressionList.lastOrNull() as GoReferenceExpression
+fun GoCallExpr.receiverReference(): GoExpression? {
+    return this.argumentList.expressionList.lastOrNull()
 }
 
 fun GoCallExpr.requestType(): String {

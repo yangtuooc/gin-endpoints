@@ -52,7 +52,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
     }
 
     override fun getEndpointPresentation(group: GinRoutePointer, endpoint: GinUrlMappingElement): ItemPresentation {
-        val httpUrl = endpoint.getURL()
+        val httpUrl = GinUrlMappingElement.getPathPresentation(endpoint)
         val httpMethods = endpoint.getMethod().map { it.name }.toList()
 
         return HttpMethodPresentation(httpUrl, httpMethods, group.getLocationString(), GinEndpointsIcons.GIN_LOGO)
