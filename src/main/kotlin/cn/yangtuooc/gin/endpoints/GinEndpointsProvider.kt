@@ -1,6 +1,7 @@
 package cn.yangtuooc.gin.endpoints
 
 import cn.yangtuooc.gin.endpoints.ext.findGinRoutes
+import cn.yangtuooc.gin.endpoints.oas.GinOpenApiSpecificationBuilder
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
 import com.intellij.microservices.oas.OpenApiSpecification
@@ -61,18 +62,14 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
 
     private fun findUrlTargetInfo(group: GinRoutePointer, endpoint: GinUrlMappingElement): UrlTargetInfo {
         val mapping = GinRoutePointerUrlMappingElement(group)
-        return GinUrlTargetInfo(listOf("http://", "https://"), listOf(), mapping)
+        return GinUrlTargetInfo(UrlConstants.HTTP_SCHEMAS, listOf(), mapping)
     }
 
     override fun getDocumentationElement(group: GinRoutePointer, endpoint: GinUrlMappingElement): PsiElement? {
         return endpoint.getDocumentationPsiElement()
     }
 
-    override fun getOpenApiSpecification(
-        group: GinRoutePointer,
-        endpoint: GinUrlMappingElement
-    ): OpenApiSpecification? {
-        // TODO 完善 OpenApiSpecification
-        return super.getOpenApiSpecification(group, endpoint)
+    override fun getOpenApiSpecification(group: GinRoutePointer, endpoint: GinUrlMappingElement): OpenApiSpecification {
+        return GinOpenApiSpecificationBuilder(group, endpoint).build()
     }
 }
