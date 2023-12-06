@@ -1,5 +1,6 @@
 package cn.yangtuooc.gin.endpoints
 
+import cn.yangtuooc.gin.endpoints.ext.findGinRoutes
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
 import com.intellij.microservices.url.UrlTargetInfo
@@ -23,7 +24,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
             val module = filter.module
             if (!hasGinLibrary(module)) return emptySet()
 
-            return findGinRoutes(module)
+            return module.findGinRoutes()
         }
         return emptySet()
     }
