@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil
  * @author yangtuo
  */
 
-fun GoCallExpr.receiver(): String {
+fun GoCallExpr.getLocationString(): String {
     return this.argumentList.expressionList.lastOrNull()?.text ?: ""
 }
 
