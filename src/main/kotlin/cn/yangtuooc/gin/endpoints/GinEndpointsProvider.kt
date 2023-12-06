@@ -18,7 +18,10 @@ class GinEndpointsProvider : EndpointsProvider<GinRoute, GinRoute> {
         FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
     override fun getEndpointData(group: GinRoute, endpoint: GinRoute, dataId: String): Any? {
-        return endpoint.getFunctionDeclaration()
+        return when (dataId) {
+            "endpoint.documentation.element" -> return endpoint.getFunctionDeclaration()
+            else -> super.getEndpointData(group, endpoint, dataId)
+        }
     }
 
     override fun getStatus(project: Project): Status {
