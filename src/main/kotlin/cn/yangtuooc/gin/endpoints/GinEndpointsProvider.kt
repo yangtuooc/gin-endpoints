@@ -3,12 +3,12 @@ package cn.yangtuooc.gin.endpoints
 import cn.yangtuooc.gin.endpoints.ext.findGinRoutes
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
+import com.intellij.microservices.oas.OpenApiSpecification
 import com.intellij.microservices.url.UrlTargetInfo
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiManager
 
 /**
  * @author yangtuo
@@ -31,7 +31,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
 
 
     override fun getModificationTracker(project: Project): ModificationTracker {
-        return PsiManager.getInstance(project).modificationTracker
+        return GinModificationTrackersManager.getInstance(project).getEndpointsModificationTracker()
     }
 
     override fun getStatus(project: Project): EndpointsProvider.Status {
@@ -66,5 +66,13 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
 
     override fun getDocumentationElement(group: GinRoutePointer, endpoint: GinUrlMappingElement): PsiElement? {
         return endpoint.getDocumentationPsiElement()
+    }
+
+    override fun getOpenApiSpecification(
+        group: GinRoutePointer,
+        endpoint: GinUrlMappingElement
+    ): OpenApiSpecification? {
+        // TODO 完善 OpenApiSpecification
+        return super.getOpenApiSpecification(group, endpoint)
     }
 }
