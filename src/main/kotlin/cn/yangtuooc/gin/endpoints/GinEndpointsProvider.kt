@@ -70,6 +70,6 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlM
     }
 
     override fun getOpenApiSpecification(group: GinRoutePointer, endpoint: GinUrlMappingElement): OpenApiSpecification {
-        return GinOpenApiSpecificationBuilder(group, endpoint).build()
+        return GinOpenApiSpecificationBuilder(endpoint, findUrlTargetInfo(group, endpoint)).build()
     }
 }
