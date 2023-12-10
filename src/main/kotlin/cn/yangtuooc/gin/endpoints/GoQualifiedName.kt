@@ -9,10 +9,10 @@ sealed class GoQualifiedName {
 }
 
 data class Field(
-    override val importPath: String,
-    val packageName: String,
-    val structName: String,
-    val fieldName: String
+        override val importPath: String,
+        val packageName: String,
+        val structName: String,
+        val fieldName: String
 ) : GoQualifiedName() {
 
     override val shortName: String
@@ -28,9 +28,9 @@ data class Field(
 }
 
 data class Function(
-    override val importPath: String,
-    val packageName: String,
-    val functionName: String
+        override val importPath: String,
+        val packageName: String,
+        val functionName: String
 ) : GoQualifiedName() {
 
 
@@ -49,10 +49,10 @@ data class Function(
 }
 
 data class Method(
-    override val importPath: String,
-    val packageName: String,
-    val receiverTypeName: String,
-    val methodName: String
+        override val importPath: String,
+        val packageName: String,
+        val receiverTypeName: String,
+        val methodName: String
 ) : GoQualifiedName() {
 
 

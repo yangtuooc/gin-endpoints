@@ -7,7 +7,6 @@ import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
 import com.intellij.microservices.url.UrlTargetInfo
 import com.intellij.navigation.ItemPresentation
-import com.intellij.openapi.components.ComponentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
 
@@ -18,7 +17,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
 
     override val endpointType: EndpointType = HTTP_SERVER_TYPE
     override val presentation: FrameworkPresentation =
-        FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
+            FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
     override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GoFile> {
         if (filter !is SearchScopeEndpointsFilter) {
@@ -28,8 +27,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     }
 
     override fun getModificationTracker(project: Project): ModificationTracker {
-        val manager = project as ComponentManager
-        return manager.getService(GoLangModificationTracker::class.java)
+        return GoLangModificationTracker.getInstance(project)
     }
 
     override fun getStatus(project: Project): Status {
@@ -42,17 +40,17 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     }
 
     override fun isValidEndpoint(group: GoFile, endpoint: GinUrlData): Boolean =
-        group.isValid && endpoint.getSourcePsi().isValid
+            group.isValid && endpoint.getSourcePsi().isValid
 
     override fun getEndpoints(group: GoFile) = getOrComputeEndpointsInFile(group)
 
 
     override fun getEndpointPresentation(group: GoFile, endpoint: GinUrlData): ItemPresentation {
         return HttpMethodPresentation(
-            endpoint.getUrl(),
-            endpoint.getHttpMethod(),
-            endpoint.getLocationString(),
-            GinEndpointsIcons.GIN_LOGO
+                endpoint.getUrl(),
+                endpoint.getHttpMethod(),
+                endpoint.getLocationString(),
+                GinEndpointsIcons.GIN_LOGO
         )
     }
 }

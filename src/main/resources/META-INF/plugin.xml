@@ -1,6 +1,5 @@
 <idea-plugin package="cn.yangtuooc.gin.endpoints">
   <id>cn.yangtuooc.gin</id>
-
   <name>Gin Endpoints</name>
   <vendor>yangtuooc</vendor>
 
@@ -15,8 +14,8 @@
   </dependencies>
 
   <extensions defaultExtensionNs="com.intellij">
-    <microservices.endpointsProvider implementation="cn.yangtuooc.gin.endpoints.GinEndpointsProvider"/>
+    <microservices.endpointsProvider
+      implementation="cn.yangtuooc.gin.endpoints.GinEndpointsProvider"/>
     <dependencySupport kind="go" coordinate="github.com/gin-gonic/gin" displayName="Gin Framework"/>
   </extensions>
-
 </idea-plugin>

@@ -16,11 +16,9 @@ import com.intellij.psi.util.CachedValuesManager
  */
 
 val LIBRARY_SERVER_FUNCTIONS_KEY =
-    Key.create<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>("GinLibraryServerFunctions")
+        Key.create<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>("GinLibraryServerFunctions")
 
 fun findGoFilesWithServerDeclarations(project: Project, scope: GlobalSearchScope): Iterable<GoFile> {
-
-
     val psiFiles = findAllGoFilesWithWords(project, scope, knownServerLocationShortNames())
     return psiFiles.filter { it.isValid && it is GoFile }.map { it as GoFile }
 }
@@ -40,11 +38,11 @@ fun getOrComputeEndpointsInFile(file: GoFile): List<GinUrlData> {
 internal fun computeEndpoints(file: GoFile): List<GinUrlData> {
     val project = file.project
     val stdLibDeclarations =
-        getOrComputeStdLibDeclarations(project, LIBRARY_SERVER_FUNCTIONS_KEY, knownServerUrlLocations())
+            getOrComputeStdLibDeclarations(project, LIBRARY_SERVER_FUNCTIONS_KEY, knownServerUrlLocations())
 
     return stdLibDeclarations
-        .flatMap {
-            val searchScope = GlobalSearchScope.fileScope(file)
-            findArgumentByIndexAmongUsages(it, searchScope)
-        }
+            .flatMap {
+                val searchScope = GlobalSearchScope.fileScope(file)
+                findArgumentByIndexAmongUsages(it, searchScope)
+            }
 }

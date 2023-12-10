@@ -8,8 +8,8 @@ import com.intellij.psi.SmartPsiElementPointer
  * @author yangtuo
  */
 class GinUrlData(
-    private val url: String,
-    private val pointer: SmartPsiElementPointer<GoNamedElement>
+        private val url: String,
+        private val pointer: SmartPsiElementPointer<GoNamedElement>
 ) {
 
     fun getSourcePsi(): GoExpression {
