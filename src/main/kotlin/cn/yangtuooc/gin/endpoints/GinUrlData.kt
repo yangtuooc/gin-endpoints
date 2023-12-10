@@ -1,30 +1,29 @@
 package cn.yangtuooc.gin.endpoints
 
 import com.goide.psi.GoExpression
-import com.goide.psi.GoNamedElement
 import com.intellij.psi.SmartPsiElementPointer
 
 /**
  * @author yangtuo
  */
 class GinUrlData(
-        private val url: String,
-        private val pointer: SmartPsiElementPointer<GoNamedElement>
+    private val url: String?,
+    private val pointer: SmartPsiElementPointer<GoExpression>
 ) {
 
-    fun getSourcePsi(): GoExpression {
-        return pointer.element as GoExpression
+    fun getSourcePsi(): GoExpression? {
+        return pointer.element
     }
 
-    fun getUrl(): String {
+    fun getUrl(): String? {
         return url
     }
 
     fun getHttpMethod(): List<String> {
-        TODO()
+        return listOf("GET")
     }
 
     fun getLocationString(): String {
-        TODO()
+        return pointer.element?.text ?: ""
     }
 }

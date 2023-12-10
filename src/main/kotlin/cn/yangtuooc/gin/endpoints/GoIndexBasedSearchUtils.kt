@@ -1,9 +1,10 @@
 package cn.yangtuooc.gin.endpoints
 
 import com.goide.GoFileType
+import com.goide.psi.GoCallExpr
 import com.goide.psi.GoNamedElement
 import com.goide.psi.GoReferencesSearch
-import com.goide.sdk.GoSdkUtil
+import com.goide.psi.impl.GoTypeUtil
 import com.goide.stubs.index.GoAllPublicNamesIndex
 import com.goide.stubs.index.GoNonPackageLevelNamesIndex
 import com.intellij.openapi.progress.ProgressManager
@@ -19,6 +20,7 @@ import com.intellij.psi.stubs.StubIndexKey
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider.Result
 import com.intellij.psi.util.CachedValuesManager
+import com.intellij.psi.util.parentOfType
 import com.intellij.util.CommonProcessors.CollectProcessor
 import com.intellij.util.Processor
 import com.intellij.util.Processors
@@ -71,7 +73,7 @@ fun getOrComputeStdLibDeclarations(
 
 internal fun discoverStdLibDeclaration(
         project: Project,
-        location: FunctionOrMethodParameterInfo
+        suitableLocation: FunctionOrMethodParameterInfo
 ): List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>> {
     val foundElements = mutableListOf<GoNamedElement>()
     val cancelableCollectProcessor = object : CollectProcessor<GoNamedElement>(foundElements) {
@@ -82,14 +84,11 @@ internal fun discoverStdLibDeclaration(
         }
 
         override fun accept(element: GoNamedElement?): Boolean {
-            return element?.let {
-                GoSdkUtil.isInSdk(it.containingFile)
-                        && it.qualifiedName == location.fqn.asInPsi
-            } ?: false
+            return element?.qualifiedName.equals(suitableLocation.fqn.asInPsi)
         }
     }
 
-    val indexKey: StubIndexKey<String, GoNamedElement> = when (location.fqn) {
+    val indexKey: StubIndexKey<String, GoNamedElement> = when (suitableLocation.fqn) {
         is Function -> GoAllPublicNamesIndex.ALL_PUBLIC_NAMES
         is Method -> GoNonPackageLevelNamesIndex.KEY
         else -> return mutableListOf()
@@ -97,7 +96,7 @@ internal fun discoverStdLibDeclaration(
 
     StubIndex.getInstance().processElements(
             indexKey,
-            location.fqn.asInIndex,
+            suitableLocation.fqn.asInIndex,
             project,
             ProjectScope.getLibrariesScope(project),
             GoNamedElement::class.java,
@@ -107,7 +106,7 @@ internal fun discoverStdLibDeclaration(
     val destinations = mutableListOf<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>()
     for (foundElement in foundElements) {
         destinations.add(
-                location to SmartPointerManager.getInstance(project).createSmartPsiElementPointer(foundElement)
+                suitableLocation to SmartPointerManager.getInstance(project).createSmartPsiElementPointer(foundElement)
         )
     }
     return destinations
@@ -119,10 +118,13 @@ fun findArgumentByIndexAmongUsages(
         searchScope: SearchScope
 ): List<GinUrlData> {
     val element = locationToPsi.second.element ?: return emptyList()
-    val psiReferences = GoReferencesSearch.search(element, searchScope)
-    val results = mutableListOf<GinUrlData>()
-//    for (reference in psiReferences) {
-//        results.add(GinUrlData())
-//    }
-    return emptyList()
+    return GoReferencesSearch.search(element, searchScope)
+            .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
+            .mapNotNull { callExpr -> callExpr.argumentList.expressionList.getOrNull(locationToPsi.first.argumentIndex) }
+            .filter { goExpression -> GoTypeUtil.isString(goExpression.getGoType(null), goExpression) }
+            .mapNotNull { goExpression ->
+                goExpression.value?.let {
+                    GinUrlData(it.string, SmartPointerManager.getInstance(goExpression.project).createSmartPsiElementPointer(goExpression))
+                }
+            }
 }

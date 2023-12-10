@@ -40,7 +40,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     }
 
     override fun isValidEndpoint(group: GoFile, endpoint: GinUrlData): Boolean =
-            group.isValid && endpoint.getSourcePsi().isValid
+            group.isValid && endpoint.getSourcePsi()?.isValid == true
 
     override fun getEndpoints(group: GoFile) = getOrComputeEndpointsInFile(group)
 
