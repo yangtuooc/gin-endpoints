@@ -11,6 +11,7 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.util.Key
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
@@ -29,15 +30,19 @@ import com.intellij.util.Processors
  * @author yangtuo
  */
 
-fun knownServerUrlLocations(): List<FunctionOrMethodParameterInfo> {
+fun knownGinServerUrlLocations(): List<FunctionOrMethodParameterInfo> {
     return GinServerDefinitionMethod.values().toList()
 }
 
-fun knownServerLocationShortNames(): List<String> {
-    return knownServerUrlLocations().map { it.fqn.shortName }
+fun knownGinServerLocationShortNames(): List<String> {
+    return knownGinServerUrlLocations().map { it.fqn.shortName }
 }
 
-fun findAllGoFilesWithWords(project: Project, searchScope: GlobalSearchScope, markerWords: List<String>): Set<PsiFile> {
+fun findAllGoFilesWithWords(
+    project: Project,
+    searchScope: GlobalSearchScope,
+    markerWords: List<String>
+): Set<PsiFile> {
     val foundCandidates = mutableSetOf<PsiFile>()
     val processor = Processors.cancelableCollectProcessor(foundCandidates)
     processGoFiles(project, searchScope, processor, markerWords)
@@ -50,9 +55,13 @@ internal fun processGoFiles(
     processor: Processor<PsiFile>,
     markerWords: List<String>
 ) {
-    val filesScope = GlobalSearchScope.filesScope(project, FileTypeIndex.getFiles(GoFileType.INSTANCE, searchScope))
+    val filesScope = GlobalSearchScope.filesScope(
+        project,
+        FileTypeIndex.getFiles(GoFileType.INSTANCE, searchScope)
+    )
     for (word in markerWords) {
-        PsiSearchHelper.getInstance(project).processAllFilesWithWord(word, filesScope, processor, true)
+        PsiSearchHelper.getInstance(project)
+            .processAllFilesWithWord(word, filesScope, processor, true)
     }
 }
 
@@ -63,11 +72,13 @@ fun getOrComputeStdLibDeclarations(
 ): List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>> {
 
     fun cachedValueProvider(): Result<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>> {
-        val stdLibDeclarations = suitableLocations.flatMap { discoverStdLibDeclaration(project, it) }
+        val stdLibDeclarations =
+            suitableLocations.flatMap { discoverStdLibDeclaration(project, it) }
         return Result.create(stdLibDeclarations, listOf(ProjectRootManager.getInstance(project)))
     }
 
-    return CachedValuesManager.getManager(project).getCachedValue(project, cacheKey, ::cachedValueProvider, false)
+    return CachedValuesManager.getManager(project)
+        .getCachedValue(project, cacheKey, ::cachedValueProvider, false)
 }
 
 
@@ -103,16 +114,19 @@ internal fun discoverStdLibDeclaration(
         cancelableCollectProcessor
     )
 
-    val destinations = mutableListOf<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>()
+    val destinations =
+        mutableListOf<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>()
     for (foundElement in foundElements) {
         destinations.add(
-            suitableLocation to SmartPointerManager.getInstance(project).createSmartPsiElementPointer(foundElement)
+            suitableLocation to SmartPointerManager.getInstance(project)
+                .createSmartPsiElementPointer(foundElement)
         )
     }
     return destinations
 }
 
 
+// TODO: 识别出Group，作为base-path拼接
 fun findArgumentByIndexAmongUsages(
     locationToPsi: Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>,
     searchScope: SearchScope
@@ -124,10 +138,11 @@ fun findArgumentByIndexAmongUsages(
         .filter { goExpression -> GoTypeUtil.isString(goExpression.getGoType(null), goExpression) }
         .mapNotNull { goExpression ->
             goExpression.value?.let {
-                GinUrlData(
-                    it.string,
-                    SmartPointerManager.getInstance(goExpression.project).createSmartPsiElementPointer(goExpression)
-                )
+                GinUrlData(it.string, createSmartPointer(goExpression))
             }
         }
+}
+
+fun <T : PsiElement> createSmartPointer(element: T): SmartPsiElementPointer<T> {
+    return SmartPointerManager.getInstance(element.project).createSmartPsiElementPointer(element)
 }

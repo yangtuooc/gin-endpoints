@@ -16,29 +16,41 @@ import com.intellij.psi.util.CachedValuesManager
  */
 
 val LIBRARY_SERVER_FUNCTIONS_KEY =
-    Key.create<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>("GinLibraryServerFunctions")
+    Key.create<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>(
+        "GinLibraryServerFunctions"
+    )
 
-fun findGoFilesWithServerDeclarations(project: Project, scope: GlobalSearchScope): Iterable<GoFile> {
-    val psiFiles = findAllGoFilesWithWords(project, scope, knownServerLocationShortNames())
+fun findGoFilesWithGinServerDeclarations(
+    project: Project,
+    scope: GlobalSearchScope
+): Iterable<GoFile> {
+    val psiFiles = findAllGoFilesWithWords(project, scope, knownGinServerLocationShortNames())
     return psiFiles.filter { it.isValid && it is GoFile }.map { it as GoFile }
 }
 
 fun createUrlTargetInfo(endpoint: GinUrlData): UrlTargetInfo {
 //    return UrlTargetInfo(endpoint.getUrl(), endpoint.getHttpMethod(), endpoint.getLocationString())
-    TODO()ø
+    TODO()
 }
 
 fun getOrComputeEndpointsInFile(file: GoFile): List<GinUrlData> {
     val project = file.project
     return CachedValuesManager.getManager(project).getCachedValue(file) {
-        Result.create(computeEndpoints(file), listOf(GoLangModificationTracker.getInstance(project)))
+        Result.create(
+            computeEndpoints(file),
+            listOf(GoLangModificationTracker.getInstance(project))
+        )
     }
 }
 
 internal fun computeEndpoints(file: GoFile): List<GinUrlData> {
     val project = file.project
     val stdLibDeclarations =
-        getOrComputeStdLibDeclarations(project, LIBRARY_SERVER_FUNCTIONS_KEY, knownServerUrlLocations())
+        getOrComputeStdLibDeclarations(
+            project,
+            LIBRARY_SERVER_FUNCTIONS_KEY,
+            knownGinServerUrlLocations()
+        )
 
     return stdLibDeclarations
         .flatMap {

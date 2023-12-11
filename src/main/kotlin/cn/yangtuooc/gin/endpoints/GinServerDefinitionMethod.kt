@@ -17,7 +17,14 @@ enum class GinServerDefinitionMethod(
     OPTIONS(Method("github.com/gin-gonic/gin", "gin", "RouterGroup", "OPTIONS"), 0),
     HEAD(Method("github.com/gin-gonic/gin", "gin", "RouterGroup", "HEAD"), 0),
     ANY(Method("github.com/gin-gonic/gin", "gin", "RouterGroup", "Any"), 0),
+}
+
+enum class GinServerGroupDefinitionMethod(
+    override val fqn: GoQualifiedName,
+    override val argumentIndex: Int
+) : FunctionOrMethodParameterInfo {
     GROUP(Method("github.com/gin-gonic/gin", "gin", "RouterGroup", "Group"), 0),
+    ;
 }
 
 

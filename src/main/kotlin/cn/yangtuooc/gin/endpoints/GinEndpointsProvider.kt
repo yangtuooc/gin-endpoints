@@ -23,7 +23,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
         if (filter !is SearchScopeEndpointsFilter) {
             return emptyList()
         }
-        return findGoFilesWithServerDeclarations(project, filter.searchScope)
+        return findGoFilesWithGinServerDeclarations(project, filter.searchScope)
     }
 
     override fun getModificationTracker(project: Project): ModificationTracker {
