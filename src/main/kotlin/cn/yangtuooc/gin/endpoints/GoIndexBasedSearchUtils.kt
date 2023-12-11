@@ -1,10 +1,10 @@
 package cn.yangtuooc.gin.endpoints
 
+import cn.yangtuooc.gin.endpoints.ext.buildCompleteUrl
 import com.goide.GoFileType
 import com.goide.psi.GoCallExpr
 import com.goide.psi.GoNamedElement
 import com.goide.psi.GoReferencesSearch
-import com.goide.psi.impl.GoTypeUtil
 import com.goide.stubs.index.GoAllPublicNamesIndex
 import com.goide.stubs.index.GoNonPackageLevelNamesIndex
 import com.intellij.openapi.progress.ProgressManager
@@ -126,7 +126,6 @@ internal fun discoverStdLibDeclaration(
 }
 
 
-// TODO: 识别出Group，作为base-path拼接
 fun findArgumentByIndexAmongUsages(
     locationToPsi: Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>,
     searchScope: SearchScope
@@ -134,14 +133,15 @@ fun findArgumentByIndexAmongUsages(
     val element = locationToPsi.second.element ?: return emptyList()
     return GoReferencesSearch.search(element, searchScope)
         .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
-        .mapNotNull { callExpr -> callExpr.argumentList.expressionList.getOrNull(locationToPsi.first.argumentIndex) }
-        .filter { goExpression -> GoTypeUtil.isString(goExpression.getGoType(null), goExpression) }
-        .mapNotNull { goExpression ->
-            goExpression.value?.let {
-                GinUrlData(it.string, createSmartPointer(goExpression))
-            }
+        .map { callExpr ->
+            callExpr.buildCompleteUrl(locationToPsi.first.argumentIndex)
+            GinUrlData(
+                callExpr.buildCompleteUrl(locationToPsi.first.argumentIndex),
+                createSmartPointer(callExpr)
+            )
         }
 }
+
 
 fun <T : PsiElement> createSmartPointer(element: T): SmartPsiElementPointer<T> {
     return SmartPointerManager.getInstance(element.project).createSmartPsiElementPointer(element)
