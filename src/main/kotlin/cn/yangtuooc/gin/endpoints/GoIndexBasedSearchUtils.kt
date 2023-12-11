@@ -45,10 +45,10 @@ fun findAllGoFilesWithWords(project: Project, searchScope: GlobalSearchScope, ma
 }
 
 internal fun processGoFiles(
-        project: Project,
-        searchScope: GlobalSearchScope,
-        processor: Processor<PsiFile>,
-        markerWords: List<String>
+    project: Project,
+    searchScope: GlobalSearchScope,
+    processor: Processor<PsiFile>,
+    markerWords: List<String>
 ) {
     val filesScope = GlobalSearchScope.filesScope(project, FileTypeIndex.getFiles(GoFileType.INSTANCE, searchScope))
     for (word in markerWords) {
@@ -57,9 +57,9 @@ internal fun processGoFiles(
 }
 
 fun getOrComputeStdLibDeclarations(
-        project: Project,
-        cacheKey: Key<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>,
-        suitableLocations: List<FunctionOrMethodParameterInfo>
+    project: Project,
+    cacheKey: Key<CachedValue<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>>>,
+    suitableLocations: List<FunctionOrMethodParameterInfo>
 ): List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>> {
 
     fun cachedValueProvider(): Result<List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>> {
@@ -72,8 +72,8 @@ fun getOrComputeStdLibDeclarations(
 
 
 internal fun discoverStdLibDeclaration(
-        project: Project,
-        suitableLocation: FunctionOrMethodParameterInfo
+    project: Project,
+    suitableLocation: FunctionOrMethodParameterInfo
 ): List<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>> {
     val foundElements = mutableListOf<GoNamedElement>()
     val cancelableCollectProcessor = object : CollectProcessor<GoNamedElement>(foundElements) {
@@ -95,18 +95,18 @@ internal fun discoverStdLibDeclaration(
     }
 
     StubIndex.getInstance().processElements(
-            indexKey,
-            suitableLocation.fqn.asInIndex,
-            project,
-            ProjectScope.getLibrariesScope(project),
-            GoNamedElement::class.java,
-            cancelableCollectProcessor
+        indexKey,
+        suitableLocation.fqn.asInIndex,
+        project,
+        ProjectScope.getLibrariesScope(project),
+        GoNamedElement::class.java,
+        cancelableCollectProcessor
     )
 
     val destinations = mutableListOf<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>()
     for (foundElement in foundElements) {
         destinations.add(
-                suitableLocation to SmartPointerManager.getInstance(project).createSmartPsiElementPointer(foundElement)
+            suitableLocation to SmartPointerManager.getInstance(project).createSmartPsiElementPointer(foundElement)
         )
     }
     return destinations
@@ -114,17 +114,20 @@ internal fun discoverStdLibDeclaration(
 
 
 fun findArgumentByIndexAmongUsages(
-        locationToPsi: Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>,
-        searchScope: SearchScope
+    locationToPsi: Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>,
+    searchScope: SearchScope
 ): List<GinUrlData> {
     val element = locationToPsi.second.element ?: return emptyList()
     return GoReferencesSearch.search(element, searchScope)
-            .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
-            .mapNotNull { callExpr -> callExpr.argumentList.expressionList.getOrNull(locationToPsi.first.argumentIndex) }
-            .filter { goExpression -> GoTypeUtil.isString(goExpression.getGoType(null), goExpression) }
-            .mapNotNull { goExpression ->
-                goExpression.value?.let {
-                    GinUrlData(it.string, SmartPointerManager.getInstance(goExpression.project).createSmartPsiElementPointer(goExpression))
-                }
+        .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
+        .mapNotNull { callExpr -> callExpr.argumentList.expressionList.getOrNull(locationToPsi.first.argumentIndex) }
+        .filter { goExpression -> GoTypeUtil.isString(goExpression.getGoType(null), goExpression) }
+        .mapNotNull { goExpression ->
+            goExpression.value?.let {
+                GinUrlData(
+                    it.string,
+                    SmartPointerManager.getInstance(goExpression.project).createSmartPsiElementPointer(goExpression)
+                )
             }
+        }
 }

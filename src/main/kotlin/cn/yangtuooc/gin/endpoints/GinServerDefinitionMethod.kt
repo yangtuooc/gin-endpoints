@@ -5,8 +5,8 @@ package cn.yangtuooc.gin.endpoints
  */
 
 enum class GinServerDefinitionMethod(
-        override val fqn: GoQualifiedName,
-        override val argumentIndex: Int
+    override val fqn: GoQualifiedName,
+    override val argumentIndex: Int
 ) : FunctionOrMethodParameterInfo {
 
     GET(Method("github.com/gin-gonic/gin", "gin", "RouterGroup", "GET"), 0),

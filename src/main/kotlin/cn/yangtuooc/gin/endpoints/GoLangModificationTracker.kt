@@ -14,7 +14,7 @@ import com.intellij.psi.PsiManager
 class GoLangModificationTracker(project: Project) : ModificationTracker {
 
     private val goLangTracker: ModificationTracker =
-            PsiManager.getInstance(project).modificationTracker.forLanguage(GoLanguage.INSTANCE)
+        PsiManager.getInstance(project).modificationTracker.forLanguage(GoLanguage.INSTANCE)
 
     override fun getModificationCount(): Long = goLangTracker.modificationCount
 

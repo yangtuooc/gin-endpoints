@@ -17,7 +17,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
 
     override val endpointType: EndpointType = HTTP_SERVER_TYPE
     override val presentation: FrameworkPresentation =
-            FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
+        FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
     override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GoFile> {
         if (filter !is SearchScopeEndpointsFilter) {
@@ -40,17 +40,17 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     }
 
     override fun isValidEndpoint(group: GoFile, endpoint: GinUrlData): Boolean =
-            group.isValid && endpoint.getSourcePsi()?.isValid == true
+        group.isValid && endpoint.getSourcePsi()?.isValid == true
 
     override fun getEndpoints(group: GoFile) = getOrComputeEndpointsInFile(group)
 
 
     override fun getEndpointPresentation(group: GoFile, endpoint: GinUrlData): ItemPresentation {
         return HttpMethodPresentation(
-                endpoint.getUrl(),
-                endpoint.getHttpMethod(),
-                endpoint.getLocationString(),
-                GinEndpointsIcons.GIN_LOGO
+            endpoint.getUrl(),
+            endpoint.getHttpMethod(),
+            endpoint.getLocationString(),
+            GinEndpointsIcons.GIN_LOGO
         )
     }
 }
