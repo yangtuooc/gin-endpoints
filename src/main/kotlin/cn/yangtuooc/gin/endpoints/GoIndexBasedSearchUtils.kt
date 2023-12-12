@@ -117,10 +117,7 @@ internal fun discoverStdLibDeclaration(
     val destinations =
         mutableListOf<Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>>()
     for (foundElement in foundElements) {
-        destinations.add(
-            suitableLocation to SmartPointerManager.getInstance(project)
-                .createSmartPsiElementPointer(foundElement)
-        )
+        destinations.add(suitableLocation to createSmartPointer(foundElement))
     }
     return destinations
 }
@@ -134,7 +131,6 @@ fun findArgumentByIndexAmongUsages(
     return GoReferencesSearch.search(element, searchScope)
         .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
         .map { callExpr ->
-            callExpr.buildCompleteUrl(locationToPsi.first.argumentIndex)
             GinUrlData(
                 callExpr.buildCompleteUrl(locationToPsi.first.argumentIndex),
                 createSmartPointer(callExpr)
