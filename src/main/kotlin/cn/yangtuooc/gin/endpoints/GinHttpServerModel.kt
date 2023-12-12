@@ -29,8 +29,7 @@ fun findGoFilesWithGinServerDeclarations(
 }
 
 fun createUrlTargetInfo(endpoint: GinUrlData): UrlTargetInfo {
-//    return UrlTargetInfo(endpoint.getUrl(), endpoint.getHttpMethod(), endpoint.getLocationString())
-    TODO()
+    return endpoint.toUrlTargetInfo()
 }
 
 fun getOrComputeEndpointsInFile(file: GoFile): List<GinUrlData> {

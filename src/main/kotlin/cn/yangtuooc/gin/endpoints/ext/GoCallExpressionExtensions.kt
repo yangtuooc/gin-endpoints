@@ -25,10 +25,11 @@ internal fun combineUrlSegments(baseSegment: String?, additionalSegment: String)
 }
 
 internal fun resolveBaseUrlSegment(goExpression: GoExpression): String? {
-    val resolvedElement = (goExpression as? GoReferenceExpression)?.qualifier?.reference?.resolve()
-    val baseUrlExpr = when (resolvedElement) {
-        is GoShortVarDeclaration -> resolvedElement.rightExpressionsList.firstOrNull() as? GoCallExpr
-        is GoVarDefinition -> {
+    val resolvedElement =
+        (goExpression as? GoReferenceExpression)?.qualifier?.reference?.resolve() ?: return null
+    val baseUrlExpr = when (val declaration = resolvedElement.parent) {
+        is GoShortVarDeclaration -> declaration.rightExpressionsList.firstOrNull() as GoCallExpr
+        is GoVarDeclaration -> {
             // TODO: support var definition
             return null
         }
