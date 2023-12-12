@@ -1,69 +1,60 @@
 package cn.yangtuooc.gin.endpoints
 
+import com.goide.psi.GoFile
+import com.goide.sdk.GoSdkUtil
 import com.intellij.microservices.endpoints.*
+import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
 import com.intellij.microservices.url.UrlTargetInfo
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiManager
 
 /**
  * @author yangtuo
  */
-class GinEndpointsProvider : EndpointsUrlTargetProvider<GinRoutePointer, GinUrlMappingElement> {
+class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
 
     override val endpointType: EndpointType = HTTP_SERVER_TYPE
     override val presentation: FrameworkPresentation =
         FrameworkPresentation("Gin Web Framework", "Gin Web Framework", GinEndpointsIcons.GIN_LOGO)
 
-    override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GinRoutePointer> {
-        if (filter is ModuleEndpointsFilter) {
-            val module = filter.module
-            if (!hasGinLibrary(module)) return emptySet()
-
-            return findGinRoutes(module)
+    override fun getEndpointGroups(project: Project, filter: EndpointsFilter): Iterable<GoFile> {
+        if (filter !is SearchScopeEndpointsFilter) {
+            return emptyList()
         }
-        return emptySet()
+        return findGoFilesWithGinServerDeclarations(project, filter.searchScope)
     }
-
 
     override fun getModificationTracker(project: Project): ModificationTracker {
-        return PsiManager.getInstance(project).modificationTracker
+        return GoLangModificationTracker.getInstance(project)
     }
 
-    override fun getStatus(project: Project): EndpointsProvider.Status {
-        if (hasGinLibrary(project)) return EndpointsProvider.Status.HAS_ENDPOINTS
-        return EndpointsProvider.Status.UNAVAILABLE
+    override fun getStatus(project: Project): Status {
+        val goModules = GoSdkUtil.getGoModules(project)
+        return if (goModules.isNotEmpty()) Status.AVAILABLE else Status.UNAVAILABLE
     }
 
-    override fun getUrlTargetInfo(group: GinRoutePointer, endpoint: GinUrlMappingElement): Iterable<UrlTargetInfo> {
-        val targetInfo = findUrlTargetInfo(group, endpoint)
-        return listOf(targetInfo)
+    override fun getUrlTargetInfo(group: GoFile, endpoint: GinUrlData): Iterable<UrlTargetInfo> {
+        return listOf(createUrlTargetInfo(endpoint))
     }
 
-    override fun isValidEndpoint(group: GinRoutePointer, endpoint: GinUrlMappingElement): Boolean {
-        return endpoint.getNavigationTarget()?.isValid == true
-    }
+    override fun isValidEndpoint(group: GoFile, endpoint: GinUrlData): Boolean =
+        group.isValid && endpoint.getSourcePsi()?.isValid == true
 
-    override fun getEndpoints(group: GinRoutePointer): Iterable<GinUrlMappingElement> {
-        return listOf(GinRoutePointerUrlMappingElement(group))
-    }
+    override fun getEndpoints(group: GoFile) = getOrComputeEndpointsInFile(group)
 
-    override fun getEndpointPresentation(group: GinRoutePointer, endpoint: GinUrlMappingElement): ItemPresentation {
-        val httpUrl = GinUrlMappingElement.getPathPresentation(endpoint)
-        val httpMethods = endpoint.getMethod().map { it.name }.toList()
-
-        return HttpMethodPresentation(httpUrl, httpMethods, group.getLocationString(), GinEndpointsIcons.GIN_LOGO)
-    }
-
-    private fun findUrlTargetInfo(group: GinRoutePointer, endpoint: GinUrlMappingElement): UrlTargetInfo {
-        val mapping = GinRoutePointerUrlMappingElement(group)
-        return GinUrlTargetInfo(listOf("http://", "https://"), listOf(), mapping)
-    }
-
-    override fun getDocumentationElement(group: GinRoutePointer, endpoint: GinUrlMappingElement): PsiElement? {
+    override fun getDocumentationElement(group: GoFile, endpoint: GinUrlData): PsiElement? {
         return endpoint.getDocumentationPsiElement()
+    }
+
+    override fun getEndpointPresentation(group: GoFile, endpoint: GinUrlData): ItemPresentation {
+        return HttpMethodPresentation(
+            endpoint.getUrl(),
+            endpoint.getHttpMethod(),
+            endpoint.getLocationString(),
+            GinEndpointsIcons.GIN_LOGO
+        )
     }
 }

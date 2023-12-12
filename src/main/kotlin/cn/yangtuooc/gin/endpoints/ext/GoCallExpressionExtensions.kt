@@ -1,66 +1,42 @@
 package cn.yangtuooc.gin.endpoints.ext
 
+import cn.yangtuooc.gin.endpoints.GinServerGroupDefinitionMethod
 import com.goide.psi.*
-import com.intellij.psi.util.PsiTreeUtil
+import com.goide.psi.impl.GoTypeUtil
 
 /**
  * @author yangtuo
  */
-
-fun GoCallExpr.getLocationString(): String {
-    return this.argumentList.expressionList.lastOrNull()?.text ?: ""
+fun GoCallExpr.buildCompleteUrl(argumentIndex: Int): String {
+    val segment = this.extractUrlSegment(argumentIndex) ?: ""
+    val baseURLSegment = resolveBaseUrlSegment(this.expression)
+    return combineUrlSegments(baseURLSegment, segment)
 }
 
-fun GoCallExpr.receiverReference(): GoExpression? {
-    return this.argumentList.expressionList.lastOrNull()
+fun GoCallExpr.extractUrlSegment(argumentIndex: Int): String? {
+    return this.argumentList.expressionList.getOrNull(argumentIndex)
+        ?.takeIf { GoTypeUtil.isString(it.getGoType(null), it) }?.text?.trim('"')
 }
 
-fun GoCallExpr.requestType(): String {
-    return this.expression.lastChild.text
+internal fun combineUrlSegments(baseSegment: String?, additionalSegment: String): String {
+    val normalizedBaseSegment = baseSegment?.trim('/') ?: ""
+    val normalizedAdditionalSegment = additionalSegment.trim('/')
+    return "/$normalizedBaseSegment/$normalizedAdditionalSegment".replace("//", "/")
 }
 
-fun GoCallExpr.path(): String {
-    if (this.getSubPath().isNullOrEmpty()) {
-        return this.getBashPath() ?: ""
-    }
-    if (this.getBashPath().isNullOrEmpty()) {
-        return this.getSubPath() ?: ""
-    }
-    return "${this.getBashPath()}${this.getSubPath()}"
-}
-
-fun GoCallExpr.getSubPath(): String? {
-    val path = this.argumentList.expressionList.firstOrNull()?.text?.trim('"')
-    if (path.isNullOrEmpty()) {
-        return null
-    }
-    if (path.contains(Regex(":(\\w+)"))) {
-        return path.replace(Regex(":(\\w+)"), "{$1}")
-    }
-    return path
-}
-
-fun GoCallExpr.getBashPath(): String? {
-    val variableName = this.expression.firstChild.text
-    val file = this.containingFile as GoFile
-
-    val varDefinitions = PsiTreeUtil.findChildrenOfType(file, GoVarDefinition::class.java)
-    for (varDef in varDefinitions) {
-        if (variableName.contains(varDef.text)) {
-            val callExpr = PsiTreeUtil.findChildOfType(varDef.parent, GoCallExpr::class.java)
-            if (callExpr?.text?.contains(".Group") == true) {
-                return Regex(".Group\\(\"(.*?)\"\\)").find(callExpr.text)?.groups?.get(1)?.value
-            }
+internal fun resolveBaseUrlSegment(goExpression: GoExpression): String? {
+    val resolvedElement =
+        (goExpression as? GoReferenceExpression)?.qualifier?.reference?.resolve() ?: return null
+    val baseUrlExpr = when (val declaration = resolvedElement.parent) {
+        is GoShortVarDeclaration -> declaration.rightExpressionsList.firstOrNull() as GoCallExpr
+        is GoVarDeclaration -> {
+            // TODO: support var definition
+            return null
         }
+
+        else -> null
     }
-    return null
+
+    return baseUrlExpr?.extractUrlSegment(GinServerGroupDefinitionMethod.GROUP.argumentIndex)
 }
 
-
-fun GoCallExpr.isGinRoute(): Boolean {
-    if (this.expression is GoReferenceExpression) {
-        val methodName = this.expression.lastChild.text
-        return methodName in listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD")
-    }
-    return false
-}
