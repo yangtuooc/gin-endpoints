@@ -1,7 +1,7 @@
 package cn.yangtuooc.gin.endpoints.api.resolver
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
-import cn.yangtuooc.gin.endpoints.api.AbstractOasParameter
+import cn.yangtuooc.gin.endpoints.api.AbstractOasParameterDefinition
 import com.goide.psi.GoFile
 
 /**
@@ -10,9 +10,9 @@ import com.goide.psi.GoFile
 class GinComponentsResolver(
     val group: GoFile,
     val endpoint: GinUrlData
-) : GinResolver<Map<String, AbstractOasParameter>> {
+) : GinResolver<Map<String, AbstractOasParameterDefinition>> {
 
-    override fun resolve(): Map<String, AbstractOasParameter> {
-        TODO("Not yet implemented")
+    override fun resolve(): Map<String, AbstractOasParameterDefinition> {
+        return emptyMap()
     }
 }

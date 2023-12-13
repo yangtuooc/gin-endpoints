@@ -10,6 +10,6 @@ import com.goide.psi.GoFile
 class GinResponsesResolver(group: GoFile, endpoint: GinUrlData) :
     GinResolver<List<AbstractOasResponse>> {
     override fun resolve(): List<AbstractOasResponse> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }

@@ -1,6 +1,6 @@
 package cn.yangtuooc.gin.endpoints.oas
 
-import cn.yangtuooc.gin.endpoints.api.AbstractOasParameter
+import cn.yangtuooc.gin.endpoints.api.AbstractOasParameterDefinition
 import cn.yangtuooc.gin.endpoints.api.AbstractOasResponse
 import cn.yangtuooc.gin.endpoints.api.GinHandlerFunc
 import com.intellij.microservices.oas.*
@@ -89,7 +89,7 @@ class GinOpenApiSpecificationBuilder(private val handlerFunc: GinHandlerFunc) {
         }
     }
 
-    private fun buildOasExamples(value: AbstractOasParameter): Map<String, OasExample> {
+    private fun buildOasExamples(value: AbstractOasParameterDefinition): Map<String, OasExample> {
         return value.examples.mapValues { entry ->
             OasExample(
                 summary = entry.value.summary,
@@ -99,7 +99,7 @@ class GinOpenApiSpecificationBuilder(private val handlerFunc: GinHandlerFunc) {
         }
     }
 
-    private fun buildOasExampleValue(value: AbstractOasParameter): OasExampleValue {
+    private fun buildOasExampleValue(value: AbstractOasParameterDefinition): OasExampleValue {
         // TODO
         return OasNullValue
     }
@@ -120,7 +120,7 @@ class GinOpenApiSpecificationBuilder(private val handlerFunc: GinHandlerFunc) {
         }.toList()
     }
 
-    private fun buildOasSchema(param: AbstractOasParameter): OasSchema {
+    private fun buildOasSchema(param: AbstractOasParameterDefinition): OasSchema {
         return OasSchema(
             type = param.type,
             format = param.format,
@@ -133,7 +133,7 @@ class GinOpenApiSpecificationBuilder(private val handlerFunc: GinHandlerFunc) {
         )
     }
 
-    private fun buildOasProperties(param: AbstractOasParameter): List<OasProperty> {
+    private fun buildOasProperties(param: AbstractOasParameterDefinition): List<OasProperty> {
         return param.properties.map { property ->
             OasProperty(
                 name = property.name,

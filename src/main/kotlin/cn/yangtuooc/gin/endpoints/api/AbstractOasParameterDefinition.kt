@@ -5,15 +5,14 @@ import com.intellij.microservices.oas.OasParameterStyle
 import com.intellij.microservices.oas.OasSchemaFormat
 import com.intellij.microservices.oas.OasSchemaType
 
-interface AbstractOasParameter {
+interface AbstractOasParameterDefinition {
     val summary: String?
     val properties: List<AbstractOasProperty>
     val requiredProperties: List<String>?
     val enumValues: List<String>?
     val reference: OasReference?
-    val items: AbstractOasParameter
+    val items: AbstractOasParameterDefinition
     val name: String
-    val inPlace: OasParameterIn
     val type: OasSchemaType
     val format: OasSchemaFormat?
     val style: OasParameterStyle?
@@ -23,38 +22,36 @@ interface AbstractOasParameter {
     val allowEmptyValue: Boolean
     val example: String
     val defaultValue: String
-
     val allowableValues: List<String>
-        get() = emptyList()
-
     val vendorExtensions: Map<String, Any>
-        get() = emptyMap()
+    val examples: Map<String, AbstractOasParameterDefinition>
+}
 
-    val examples: Map<String, AbstractOasParameter>
-        get() = emptyMap()
+interface AbstractOasParameter : AbstractOasParameterDefinition {
+    val inPlace: OasParameterIn
 }
 
 interface AbstractOasProperty {
     val name: String
-    val schema: AbstractOasParameter
+    val schema: AbstractOasParameterDefinition
 }
 
 data class OasReference(val reference: String) {
     override fun toString(): String {
-        return "#/components/$reference"
+        return "#/components/schemas/$reference"
     }
 }
 
-interface AbstractOasRequestBody : AbstractOasParameter {
-    val content: Map<String, AbstractOasParameter>
+interface AbstractOasRequestBody : AbstractOasParameterDefinition {
+    val content: Map<String, AbstractOasParameterDefinition>
 }
 
-interface AbstractOasResponse : AbstractOasParameter {
+interface AbstractOasResponse : AbstractOasParameterDefinition {
 
-    val headers: List<AbstractOasParameter>
+    val headers: List<AbstractOasParameterDefinition>
         get() = emptyList()
 
-    val content: Map<String, AbstractOasParameter>
+    val content: Map<String, AbstractOasParameterDefinition>
         get() = emptyMap()
 
     val code: String

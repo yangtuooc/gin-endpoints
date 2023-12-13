@@ -1,7 +1,7 @@
 package cn.yangtuooc.gin.endpoints.api.resolver
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
-import cn.yangtuooc.gin.endpoints.api.AbstractOasParameter
+import cn.yangtuooc.gin.endpoints.api.AbstractOasParameterDefinition
 import com.goide.psi.GoFile
 
 /**
@@ -10,9 +10,9 @@ import com.goide.psi.GoFile
 class GinCookieParamsResolver(
     val group: GoFile,
     val endpoint: GinUrlData
-) : GinResolver<List<AbstractOasParameter>> {
+) : GinResolver<List<AbstractOasParameterDefinition>> {
 
-    override fun resolve(): List<AbstractOasParameter> {
-        TODO("Not yet implemented")
+    override fun resolve(): List<AbstractOasParameterDefinition> {
+        return emptyList()
     }
 }

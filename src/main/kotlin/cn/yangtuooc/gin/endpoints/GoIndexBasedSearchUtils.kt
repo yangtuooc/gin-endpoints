@@ -138,6 +138,16 @@ fun findArgumentByIndexAmongUsages(
         }
 }
 
+fun findArgumentCallExpressionByIndexAmongUsages(
+    locationToPsi: Pair<FunctionOrMethodParameterInfo, SmartPsiElementPointer<GoNamedElement>>,
+    searchScope: SearchScope
+): List<GoCallExpr> {
+    val element = locationToPsi.second.element ?: return emptyList()
+    return GoReferencesSearch.search(element, searchScope)
+        .mapNotNull { reference -> reference.element.parentOfType<GoCallExpr>() }
+        .toList()
+}
+
 
 fun <T : PsiElement> createSmartPointer(element: T): SmartPsiElementPointer<T> {
     return SmartPointerManager.getInstance(element.project).createSmartPsiElementPointer(element)

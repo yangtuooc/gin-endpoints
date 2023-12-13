@@ -8,8 +8,8 @@ import com.goide.psi.GoFile
  * @author yangtuo
  */
 class GinRequestBodyResolver(group: GoFile, endpoint: GinUrlData) :
-    GinResolver<AbstractOasRequestBody> {
-    override fun resolve(): AbstractOasRequestBody {
-        TODO("Not yet implemented")
+    GinResolver<AbstractOasRequestBody?> {
+    override fun resolve(): AbstractOasRequestBody? {
+        return null
     }
 }
