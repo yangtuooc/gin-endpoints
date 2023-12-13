@@ -16,6 +16,8 @@ interface GinHandlerFunc {
     fun getOperationId(): String?
     fun isDeprecated(): Boolean
     fun getComponents(): Map<String, AbstractOasParameter>
+    fun getHttpMethod(): List<String>
+    fun getUrl(): String?
 }
 
 

@@ -1,21 +1,14 @@
 package cn.yangtuooc.gin.endpoints.oas
 
-import cn.yangtuooc.gin.endpoints.GinUrlData
 import cn.yangtuooc.gin.endpoints.api.AbstractOasParameter
 import cn.yangtuooc.gin.endpoints.api.AbstractOasResponse
-import cn.yangtuooc.gin.endpoints.api.GinApiResolver
-import com.goide.psi.GoFile
+import cn.yangtuooc.gin.endpoints.api.GinHandlerFunc
 import com.intellij.microservices.oas.*
 
 /**
  * @author yangtuo
  */
-class GinOpenApiSpecificationBuilder(
-    group: GoFile,
-    private val endpoint: GinUrlData
-) {
-    private val handlerFunc = GinApiResolver(group, endpoint).resolve()
-
+class GinOpenApiSpecificationBuilder(private val handlerFunc: GinHandlerFunc) {
     fun build(): OpenApiSpecification {
         return buildOpenApiSpecification()
     }
@@ -42,7 +35,7 @@ class GinOpenApiSpecificationBuilder(
 
     private fun buildPaths(): Collection<OasEndpointPath> {
 
-        val operations = endpoint.getHttpMethod()
+        val operations = handlerFunc.getHttpMethod()
             .map { httpMethod ->
                 OasOperation(
                     method = OasHttpMethod.valueOf(httpMethod),
@@ -57,7 +50,7 @@ class GinOpenApiSpecificationBuilder(
                 )
             }.toList()
 
-        val builder = OasEndpointPath.Builder(endpoint.getUrl() ?: "")
+        val builder = OasEndpointPath.Builder(handlerFunc.getUrl() ?: "")
         builder.summary = handlerFunc.getSummary()
         builder.operations = operations
 
