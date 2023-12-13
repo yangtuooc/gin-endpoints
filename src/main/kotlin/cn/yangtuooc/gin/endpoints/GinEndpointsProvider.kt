@@ -1,5 +1,7 @@
 package cn.yangtuooc.gin.endpoints
 
+import cn.yangtuooc.gin.endpoints.api.GinHandlerFunc
+import cn.yangtuooc.gin.endpoints.api.GinHandlerFuncImpl
 import cn.yangtuooc.gin.endpoints.oas.GinOpenApiSpecificationBuilder
 import com.goide.psi.GoFile
 import com.goide.sdk.GoSdkUtil
@@ -63,7 +65,8 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     override fun getOpenApiSpecification(
         group: GoFile,
         endpoint: GinUrlData
-    ): OpenApiSpecification? {
-        return GinOpenApiSpecificationBuilder(group, endpoint).build()
+    ): OpenApiSpecification {
+        val handlerFunc: GinHandlerFunc = GinHandlerFuncImpl(group, endpoint)
+        return GinOpenApiSpecificationBuilder(handlerFunc).build()
     }
 }

@@ -1,27 +1,53 @@
 package cn.yangtuooc.gin.endpoints.api
 
+import cn.yangtuooc.gin.endpoints.GinUrlData
+import cn.yangtuooc.gin.endpoints.api.resolver.*
+import com.goide.psi.GoFile
+
 /**
  * @author yangtuo
  */
-class GinHandlerFuncImpl : GinHandlerFunc {
+class GinHandlerFuncImpl(
+    private val group: GoFile,
+    private val endpoint: GinUrlData
+) : GinHandlerFunc {
+
+    private val parameterResolver: GinResolver<List<AbstractOasParameter>> =
+        GinParameterResolver(group, endpoint)
+
+    private val requestBodyResolver: GinResolver<AbstractOasRequestBody> =
+        GinRequestBodyResolver(group, endpoint)
+
+    private val responsesResolver: GinResolver<List<AbstractOasResponse>> =
+        GinResponsesResolver(group, endpoint)
+
+    private val responseHeadersResolver: GinResolver<List<AbstractOasParameter>> =
+        GinHeadersResolver(group, endpoint)
+
+    private val componentsResolver: GinResolver<Map<String, AbstractOasParameter>> =
+        GinComponentsResolver(group, endpoint)
+
+    private val cookieParamsResolver: GinResolver<List<AbstractOasParameter>> =
+        GinCookieParamsResolver(group, endpoint)
+
     override fun getParameters(): List<AbstractOasParameter> {
-        TODO("Not yet implemented")
+        return parameterResolver.resolve()
     }
 
-    override fun getRequestBody(): AbstractOasRequestBody? {
-        TODO("Not yet implemented")
+    override fun getRequestBody(): AbstractOasRequestBody {
+        return requestBodyResolver.resolve()
     }
 
     override fun getResponseHeaders(): List<AbstractOasParameter> {
-        TODO("Not yet implemented")
+        return responseHeadersResolver.resolve()
     }
 
     override fun getCookieParams(): List<AbstractOasParameter> {
-        TODO("Not yet implemented")
+        return cookieParamsResolver.resolve()
     }
 
     override fun getResponses(): List<AbstractOasResponse> {
-        TODO("Not yet implemented")
+        return responsesResolver.resolve()
     }
 
 
@@ -38,14 +64,22 @@ class GinHandlerFuncImpl : GinHandlerFunc {
     }
 
     override fun getOperationId(): String? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override fun isDeprecated(): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun getComponents(): Map<String, AbstractOasParameter> {
-        TODO("Not yet implemented")
+        return componentsResolver.resolve()
+    }
+
+    override fun getHttpMethod(): List<String> {
+        return endpoint.getHttpMethod()
+    }
+
+    override fun getUrl(): String? {
+        return endpoint.getUrl()
     }
 }
