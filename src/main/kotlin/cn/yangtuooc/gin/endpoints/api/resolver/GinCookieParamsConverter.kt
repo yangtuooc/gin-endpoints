@@ -1,18 +1,18 @@
 package cn.yangtuooc.gin.endpoints.api.resolver
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
-import cn.yangtuooc.gin.endpoints.api.AbstractOasParameterDefinition
 import com.goide.psi.GoFile
+import com.intellij.microservices.oas.OasSchema
 
 /**
  * @author yangtuo
  */
-class GinCookieParamsResolver(
+class GinCookieParamsConverter(
     val group: GoFile,
     val endpoint: GinUrlData
-) : GinResolver<List<AbstractOasParameterDefinition>> {
+) : OpenApiSpecificationConverter<List<OasSchema>> {
 
-    override fun resolve(): List<AbstractOasParameterDefinition> {
+    override fun convert(): List<OasSchema> {
         return emptyList()
     }
 }
