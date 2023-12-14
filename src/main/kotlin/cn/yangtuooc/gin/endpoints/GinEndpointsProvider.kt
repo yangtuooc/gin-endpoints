@@ -1,5 +1,6 @@
 package cn.yangtuooc.gin.endpoints
 
+import cn.yangtuooc.gin.endpoints.api.converter.GinOpenApiSpecificationConverter
 import com.goide.psi.GoFile
 import com.goide.sdk.GoSdkUtil
 import com.intellij.microservices.endpoints.*
@@ -62,7 +63,7 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
     override fun getOpenApiSpecification(
         group: GoFile,
         endpoint: GinUrlData
-    ): OpenApiSpecification? {
-        return null
+    ): OpenApiSpecification {
+        return GinOpenApiSpecificationConverter(group, endpoint).convert()
     }
 }

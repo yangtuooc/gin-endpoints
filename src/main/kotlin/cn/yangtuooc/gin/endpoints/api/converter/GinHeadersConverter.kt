@@ -1,4 +1,4 @@
-package cn.yangtuooc.gin.endpoints.api.resolver
+package cn.yangtuooc.gin.endpoints.api.converter
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
 import com.goide.psi.GoFile

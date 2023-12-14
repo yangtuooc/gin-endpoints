@@ -1,4 +1,4 @@
-package cn.yangtuooc.gin.endpoints.api.resolver
+package cn.yangtuooc.gin.endpoints.api.converter
 
 /**
  * @author yangtuo
