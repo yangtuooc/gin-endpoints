@@ -21,7 +21,8 @@ class GinOpenApiSpecificationConverter(
     override fun convert(): OpenApiSpecification {
         return OpenApiSpecification(
             paths = getPaths(),
-            components = componentsConverter.convert(),
+//            components = componentsConverter.convert(),
+            components = operationConverter.parameterConverter.components,
             tags = emptyList()
         )
     }

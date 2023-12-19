@@ -12,8 +12,7 @@ import com.intellij.microservices.oas.OasOperation
 class GinOasOperationConverter(group: GoFile, private val endpoint: GinUrlData) :
     OpenApiSpecificationConverter<Map<OasHttpMethod, OasOperation>> {
 
-    private val operationMap = mutableMapOf<OasHttpMethod, OasOperation>()
-    private val parameterConverter = GinParameterConverter(group, endpoint)
+    internal val parameterConverter = GinParameterConverter(group, endpoint)
     private val requestBodyConverter = GinRequestBodyConverter(group, endpoint)
     private val responsesConverter = GinResponsesConverter(group, endpoint)
     private val handlerFunc = GinHandlerFuncImpl(endpoint)
