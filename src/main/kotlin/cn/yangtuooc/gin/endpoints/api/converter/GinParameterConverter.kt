@@ -7,6 +7,7 @@ import cn.yangtuooc.gin.endpoints.oas.ParameterMapper
 import cn.yangtuooc.gin.endpoints.visitor.OasPropertiesVisitor
 import com.goide.psi.*
 import com.intellij.microservices.oas.*
+import com.intellij.openapi.options.SchemeManager
 import com.intellij.psi.search.LocalSearchScope
 import com.intellij.psi.search.SearchScope
 
@@ -48,8 +49,15 @@ class GinParameterConverter(val group: GoFile, private val endpoint: GinUrlData)
     private fun buildSchema(argument: GoExpression, mapper: ParameterMapper): OasSchema {
         return OasSchema(
             type = mapper.type,
-            reference = "#/components/schemas/${getArgumentName(argument)}", // TODO: refactoring
-            properties = buildComponents(argument, mapper)
+//            reference = "#/components/schemas/${getArgumentName(argument)}", // TODO: refactoring
+//            properties = buildComponents(argument, mapper)
+            properties = listOf(
+                OasProperty(
+                    name = "agentId",
+                    schema = OasSchema(type = OasSchemaType.STRING, format = OasSchemaFormat.UUID)
+                ),
+            ),
+            required = listOf("agentId")
         )
     }
 
