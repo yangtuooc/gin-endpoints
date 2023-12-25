@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "cn.yangtuooc"
-version = "1.0-SNAPSHOT"
+version = "232.9921.28"
 
 repositories {
     mavenCentral()
@@ -18,10 +18,10 @@ intellij {
     type.set("GO") // Target IDE Platform
 
     plugins.set(
-            listOf(
-                    /* Plugin Dependencies */
-                    "org.jetbrains.plugins.go:232.9921.28",
-            )
+        listOf(
+            /* Plugin Dependencies */
+            "org.jetbrains.plugins.go:232.9921.28",
+        )
     )
 }
 
@@ -44,7 +44,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("222")
+        sinceBuild.set("232.9921")
         untilBuild.set("232.*")
     }
 

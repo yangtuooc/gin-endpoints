@@ -3,9 +3,32 @@
   <name>Gin Endpoints</name>
   <vendor>yangtuooc</vendor>
 
-  <description><![CDATA[
-      Gin Endpoints
-  ]]></description>
+  <description>
+    <![CDATA[
+    <h1>Gin Endpoints Extension for GoLand</h1>
+    <h2>Introduction</h2>
+    <p>"Gin Endpoints Extension" is a plugin designed for the GoLand IDE, enhancing the JetBrains official Endpoints Tool Window with support for the Gin Web framework. This extension aims to provide a richer and more convenient development experience for Go developers using the Gin framework.</p>
+
+    <h2>Features</h2>
+    <ul>
+      <li><strong>Gin Routes Support:</strong> Intuitive display and management of Gin routes within the Endpoints Tool Window.</li>
+      <li><strong>Quick Navigation:</strong> Fast navigation from the Endpoints Tool Window to the definitions and handler functions of Gin routes.</li>
+      <li><strong>Framework-Specific Features:</strong> Specific functionalities and optimizations for the Gin framework.</li>
+    </ul>
+
+    <h2>简介</h2>
+    <p>Gin Endpoints Extension 是一个为 GoLand IDE 设计的插件，它在 JetBrains 官方的 Endpoints Tool Window 功能的基础上，增加了对 Gin Web 框架的支持。这个扩展旨在为使用 Gin 框架的 Go 开发者提供更加丰富和便捷的开发体验。</p>
+
+    <h2>特性</h2>
+    <ul>
+      <li><strong>Gin 路由支持：</strong>在 Endpoints Tool Window 中直观地显示和管理 Gin 路由。</li>
+      <li><strong>快速导航：</strong>从 Endpoints Tool Window 快速跳转到 Gin 路由定义和处理函数。</li>
+      <li><strong>框架特定功能：</strong>提供针对 Gin 框架的特定功能和优化。</li>
+    </ul>
+    ]]>
+  </description>
+
+
 
   <dependencies>
     <plugin id="org.jetbrains.plugins.go"/>
