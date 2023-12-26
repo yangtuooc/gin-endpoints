@@ -1,3 +1,6 @@
+import com.jetbrains.plugin.structure.intellij.beans.IdeaVersionBean
+import com.jetbrains.plugin.structure.intellij.version.IdeVersion
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.0"
@@ -5,7 +8,7 @@ plugins {
 }
 
 group = "cn.yangtuooc"
-version = "231.8109.2"
+version = "233.11799.196"
 
 repositories {
     mavenCentral()
@@ -14,13 +17,13 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.1")
+    version.set("2023.3")
     type.set("GO") // Target IDE Platform
 
     plugins.set(
         listOf(
             /* Plugin Dependencies */
-            "org.jetbrains.plugins.go:231.8109.2",
+            "org.jetbrains.plugins.go:233.11799.196",
         )
     )
 }
@@ -44,7 +47,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("231.8109.2")
+        sinceBuild.set("233.11799.196")
 //        untilBuild.set("232.*")
     }
 
@@ -56,5 +59,9 @@ tasks {
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    runPluginVerifier {
+        ideVersions.add(IdeVersion.createIdeVersion("GO-2023.3").asString())
     }
 }
