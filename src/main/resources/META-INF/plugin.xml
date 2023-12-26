@@ -28,10 +28,9 @@
     ]]>
   </description>
 
-
+  <depends>org.jetbrains.plugins.go</depends>
 
   <dependencies>
-    <plugin id="org.jetbrains.plugins.go"/>
     <plugin id="com.intellij.modules.microservices"/>
     <plugin id="com.intellij.modules.ultimate"/>
   </dependencies>
