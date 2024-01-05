@@ -5,6 +5,7 @@ import com.goide.sdk.GoSdkUtil
 import com.intellij.microservices.endpoints.*
 import com.intellij.microservices.endpoints.EndpointsProvider.Status
 import com.intellij.microservices.endpoints.presentation.HttpMethodPresentation
+import com.intellij.microservices.oas.OpenApiSpecification
 import com.intellij.microservices.url.UrlTargetInfo
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
@@ -56,5 +57,12 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
             endpoint.getLocationString(),
             GinEndpointsIcons.GIN_LOGO
         )
+    }
+
+    override fun getOpenApiSpecification(
+        group: GoFile,
+        endpoint: GinUrlData
+    ): OpenApiSpecification? {
+        return OpenAPISpecificationProviderFactory.create(group, endpoint).getOpenAPISpecification()
     }
 }
