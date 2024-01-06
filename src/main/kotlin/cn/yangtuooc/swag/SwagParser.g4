@@ -1,39 +1,61 @@
 parser grammar SwagParser;
 
+import JSON;
+
 options {
   tokenVocab = SwagLexer;
 }
 
-title: TITLE SPACE TEXT;
-version: VERSION SPACE TEXT;
-description: DESCRIPTION SPACE TEXT;
-termsOfService: TERMS_OF_SERVICE SPACE TEXT;
+title: TITLE TEXT;
+version: VERSION TEXT;
+description: DESCRIPTION TEXT;
+termsOfService: TERMS_OF_SERVICE TEXT;
 
-contactName: CONTACT_NAME SPACE TEXT;
-contactUrl: CONTACT_URL SPACE TEXT;
-contactEmail: CONTACT_EMAIL SPACE EMAIL;
+contactName: CONTACT_NAME TEXT;
+contactUrl: CONTACT_URL TEXT;
+contactEmail: CONTACT_EMAIL EMAIL;
 
-licenseName: LICENSE_NAME SPACE TEXT;
+licenseName: LICENSE_NAME TEXT;
 licenseUrl: (HTTP_URL | HTTPS_URL);
-host: HOST SPACE TEXT;
-basePath: BASE_PATH SPACE TEXT;
+host: HOST TEXT;
+basePath: BASE_PATH TEXT;
 
-securityDefinitionsBasic: SECURITY_DEFINITIONS_BASIC SPACE TEXT;
-externalDocsDescription: EXTERNAL_DOCS_DESCRIPTION SPACE TEXT;
-externalDocsUrl: EXTERNAL_DOCS_URL SPACE TEXT;
+securityDefinitionsBasic: SECURITY_DEFINITIONS_BASIC TEXT;
+externalDocsDescription: EXTERNAL_DOCS_DESCRIPTION TEXT;
+externalDocsUrl: EXTERNAL_DOCS_URL TEXT;
 
-summary: SUMMARY SPACE TEXT;
-tags: TAGS SPACE tag+;
+summary: SUMMARY TEXT;
+tags: TAGS tag+;
 tag: TEXT (COMMA TEXT)*;
 
-accept: ACCEPT SPACE MIME;
-produce: PRODUCE SPACE MIME;
+accept: ACCEPT MIME;
+produce: PRODUCE MIME;
 
-param
-  : PARAM SPACE
-    IDENTIFIER SPACE
-    PARAM_TYPE SPACE
-    DATA_TYPE SPACE isMandatory SPACE comment SPACE attributes;
-
+param: PARAM IDENTIFIER PARAM_TYPE DATA_TYPE  isMandatory comment  (ATTRIBUTES)*;
+comment: TEXT;
 isMandatory: (TRUE | FALSE);
+
+// TODO add support for security
+
+success: returnCode PARAM_TYPE DATA_TYPE comment;
+failure: returnCode PARAM_TYPE DATA_TYPE comment;
+response: returnCode PARAM_TYPE DATA_TYPE comment;
+header: returnCode PARAM_TYPE DATA_TYPE comment;
+router: path HTTP_METHODS;
+
+extensions: extensionMark json;
+extensionMark: 'x-';
+
+returnCode: INTERGER;
+path
+  : IDENTIFIER
+  | SLASH
+  | LEFT_BRACE
+  | RIGHT_BRACE
+  | STAR
+  ;
+
+
+
+
 

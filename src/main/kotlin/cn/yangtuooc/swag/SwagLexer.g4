@@ -79,15 +79,50 @@ DATA_TYPE
   | IDENTIFIER (COMMA IDENTIFIER)*
   ;
 
-ATTRIBUTE
-  : 'default' LEFT_PAREN DATA_TYPE RIGHT_PAREN
-  | 'maximum' LEFT_PAREN NUMBER RIGHT_PAREN
-  // TODO: add more attributes: https://github.com/swaggo/swag/blob/master/README_zh-CN.md#mime%E7%B1%BB%E5%9E%8B
+COLLECTION_FORMAT
+  : 'csv'
+  | 'ssv'
+  | 'tsv'
+  | 'pipes'
+  | 'multi'
   ;
 
-NUMBER: [0-9]+;
+ATTRIBUTES
+  : 'default' LEFT_PAREN DATA_TYPE RIGHT_PAREN
+  | 'maximum' LEFT_PAREN NUMBER RIGHT_PAREN
+  | 'minimum' LEFT_PAREN NUMBER RIGHT_PAREN
+  | 'maxLength' LEFT_PAREN INTEGER RIGHT_PAREN
+  | 'minLength' LEFT_PAREN INTEGER RIGHT_PAREN
+  | ('enums'| 'Enums') LEFT_PAREN TEXT (COMMA TEXT)* RIGHT_PAREN
+  | ('format' | 'Format') LEFT_PAREN TEXT RIGHT_PAREN
+  | 'collectionFormat' LEFT_PAREN COLLECTION_FORMAT RIGHT_PAREN
+  ;
+
+HTTP_METHODS
+  : 'GET'
+  | 'get'
+  | 'POST'
+  | 'post'
+  | 'PUT'
+  | 'put'
+  | 'DELETE'
+  | 'delete'
+  | 'PATCH'
+  | 'patch'
+  | 'HEAD'
+  | 'head'
+  | 'OPTIONS'
+  | 'options'
+  ;
+
+SLASH: '/';
+NUMBER: [0-9]+ '.' [0-9]+;
+INTEGER: [0-9]+;
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
+LEFT_BRACE: '{';
+RIGHT_BRACE: '}';
+STAR: '*';
 
 TRUE: 'true';
 FALSE: 'false';
