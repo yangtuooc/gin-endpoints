@@ -1,7 +1,5 @@
 parser grammar SwagParser;
 
-import JSON;
-
 options {
   tokenVocab = SwagLexer;
 }
@@ -43,10 +41,9 @@ response: returnCode PARAM_TYPE DATA_TYPE comment;
 header: returnCode PARAM_TYPE DATA_TYPE comment;
 router: path HTTP_METHODS;
 
-extensions: extensionMark json;
-extensionMark: 'x-';
+extensions: EXTENSION_MARK json;
+returnCode: INTEGER;
 
-returnCode: INTERGER;
 path
   : IDENTIFIER
   | SLASH
@@ -54,6 +51,35 @@ path
   | RIGHT_BRACE
   | STAR
   ;
+
+
+json
+    : value EOF
+    ;
+
+obj
+    : LEFT_BRACE pair (COMMA pair)* RIGHT_BRACE
+    | LEFT_BRACE RIGHT_BRACE
+    ;
+
+pair
+    : STRING COLON value
+    ;
+
+arr
+    : LEFT_BRACKET value (COMMA value)* RIGHT_BRACKET
+    | LEFT_BRACKET RIGHT_BRACKET
+    ;
+
+value
+    : STRING
+    | NUMBER
+    | obj
+    | arr
+    | TRUE
+    | FALSE
+    | NULL
+    ;
 
 
 

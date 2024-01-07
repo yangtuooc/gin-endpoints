@@ -18,11 +18,15 @@ intellij {
     type.set("GO") // Target IDE Platform
 
     plugins.set(
-            listOf(
-                    /* Plugin Dependencies */
-                    "org.jetbrains.plugins.go:232.9921.28",
-            )
+        listOf(
+            /* Plugin Dependencies */
+            "org.jetbrains.plugins.go:232.9921.28"
+        )
     )
+}
+
+dependencies{
+    implementation("org.antlr:antlr4-runtime:4.13.1")
 }
 
 idea {

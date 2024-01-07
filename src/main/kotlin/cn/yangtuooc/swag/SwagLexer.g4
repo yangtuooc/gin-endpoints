@@ -89,8 +89,8 @@ COLLECTION_FORMAT
 
 ATTRIBUTES
   : 'default' LEFT_PAREN DATA_TYPE RIGHT_PAREN
-  | 'maximum' LEFT_PAREN NUMBER RIGHT_PAREN
-  | 'minimum' LEFT_PAREN NUMBER RIGHT_PAREN
+  | 'maximum' LEFT_PAREN FLOAT RIGHT_PAREN
+  | 'minimum' LEFT_PAREN FLOAT RIGHT_PAREN
   | 'maxLength' LEFT_PAREN INTEGER RIGHT_PAREN
   | 'minLength' LEFT_PAREN INTEGER RIGHT_PAREN
   | ('enums'| 'Enums') LEFT_PAREN TEXT (COMMA TEXT)* RIGHT_PAREN
@@ -115,14 +115,20 @@ HTTP_METHODS
   | 'options'
   ;
 
+EXTENSION_MARK: 'x-';
+
 SLASH: '/';
-NUMBER: [0-9]+ '.' [0-9]+;
+FLOAT: [0-9]+ '.' [0-9]+;
 INTEGER: [0-9]+;
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
 LEFT_BRACE: '{';
 RIGHT_BRACE: '}';
 STAR: '*';
+COLON: ':';
+LEFT_BRACKET: '[';
+RIGHT_BRACKET: ']';
+NULL: 'null';
 
 TRUE: 'true';
 FALSE: 'false';
@@ -137,3 +143,41 @@ EMAIL: ~[\r\n]+ '@' ~[\r\n]+;
 WS: [ \t\r\n]+ -> skip;
 
 
+// json
+
+STRING
+    : '"' (ESC | SAFECODEPOINT)* '"'
+    ;
+
+fragment ESC
+    : '\\' (["\\/bfnrt] | UNICODE)
+    ;
+
+fragment UNICODE
+    : 'u' HEX HEX HEX HEX
+    ;
+
+fragment HEX
+    : [0-9a-fA-F]
+    ;
+
+fragment SAFECODEPOINT
+    : ~ ["\\\u0000-\u001F]
+    ;
+
+NUMBER
+    : '-'? INT ('.' [0-9]+)? EXP?
+    ;
+
+fragment INT
+    // integer part forbis leading 0s (e.g. `01`)
+    : '0'
+    | [1-9] [0-9]*
+    ;
+
+// no leading zeros
+
+fragment EXP
+    // exponent number permits leading 0s (e.g. `1e01`)
+    : [Ee] [+\-]? [0-9]+
+    ;
