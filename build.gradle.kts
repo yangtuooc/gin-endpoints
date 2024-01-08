@@ -30,7 +30,7 @@ intellij {
 }
 
 dependencies {
-    implementation("org.antlr:antlr4-runtime:4.13.1")
+    implementation("com.strumenta:antlr-kotlin-runtime:0.1.0-RC14")
 }
 
 idea {
@@ -46,7 +46,7 @@ val generateKotlinGrammarSource = tasks.register<AntlrKotlinTask>("generateKotli
     // ANTLR .g4 files are under {example-project}/antlr
     // Only include *.g4 files. This allows tools (e.g., IDE plugins)
     // to generate temporary files inside the base path
-    source = fileTree(layout.projectDirectory.dir("antlr")) {
+    source = fileTree(layout.projectDirectory.dir("src/main/kotlin/cn/yangtuooc/swag")) {
         include("**/*.g4")
     }
 

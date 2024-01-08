@@ -135,7 +135,7 @@ FALSE: 'false';
 
 COMMA: ',';
 SPACE: [ \t]+;
-TEXT: ~[\r\n]+;
+TEXT: SPACE* [^\r\n]+;
 HTTP_URL: 'http://' ~[\r\n]+;
 HTTPS_URL: 'https://' ~[\r\n]+;
 EMAIL: ~[\r\n]+ '@' ~[\r\n]+;

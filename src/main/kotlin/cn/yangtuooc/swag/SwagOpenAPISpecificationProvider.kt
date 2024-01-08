@@ -19,8 +19,8 @@ import cn.yangtuooc.gin.endpoints.OpenAPISpecificationProvider
 import com.goide.documentation.GoDocumentationProvider
 import com.goide.psi.GoFile
 import com.intellij.microservices.oas.OpenApiSpecification
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.kotlinruntime.CharStreams
+import org.antlr.v4.kotlinruntime.CommonTokenStream
 
 /**
  * @author yangtuo
@@ -33,7 +33,7 @@ class SwagOpenAPISpecificationProvider(
     override fun getOpenAPISpecification(): OpenApiSpecification? {
         val comments =
             GoDocumentationProvider.getCommentsForElement(endpoint.getDocumentationPsiElement())
-        val statements = comments.map { comment -> comment.text.trimStart('/') }
+        val statements = comments.mapNotNull { comment -> comment.text.trimStart('/') }
         val lexer = SwagLexer(CharStreams.fromString(statements.joinToString("\n")))
         val parser = SwagParser(CommonTokenStream(lexer))
         val visitor = OpenApiSpecificationVisitor()

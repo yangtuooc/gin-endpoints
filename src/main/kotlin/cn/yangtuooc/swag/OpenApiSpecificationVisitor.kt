@@ -19,11 +19,10 @@ import com.intellij.microservices.oas.OpenApiSpecification
 /**
  * @author yangtuo
  */
-class OpenApiSpecificationVisitor : SwagParserBaseVisitor<OpenApiSpecification>() {
+class OpenApiSpecificationVisitor : SwagParserBaseVisitor<OpenApiSpecification?>() {
 
-    override fun visitStatement(ctx: SwagParser.StatementContext?): OpenApiSpecification? {
-        ctx ?: return null
-        println(ctx.text)
+    override fun visitStatement(ctx: SwagParser.StatementContext): OpenApiSpecification? {
+        println(ctx.findSummary()?.text)
         return null
     }
 }
