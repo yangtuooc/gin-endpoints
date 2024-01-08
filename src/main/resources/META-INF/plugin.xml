@@ -1,4 +1,4 @@
-<idea-plugin package="cn.yangtuooc.gin.endpoints">
+<idea-plugin package="cn.yangtuooc">
   <id>cn.yangtuooc.gin</id>
   <name>Gin Endpoints</name>
   <vendor>yangtuooc</vendor>
