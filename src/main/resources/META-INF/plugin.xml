@@ -29,10 +29,11 @@
   </description>
 
   <dependencies>
-    <plugin id="org.jetbrains.plugins.go"/>
     <plugin id="com.intellij.modules.microservices"/>
     <plugin id="com.intellij.modules.ultimate"/>
   </dependencies>
+
+  <depends>org.jetbrains.plugins.go</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <microservices.endpointsProvider

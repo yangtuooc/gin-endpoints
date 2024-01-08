@@ -4,6 +4,34 @@ options {
   tokenVocab = SwagLexer;
 }
 
+statement
+  : title
+  | version
+  | description
+  | termsOfService
+  | contactName
+  | contactUrl
+  | contactEmail
+  | licenseName
+  | licenseUrl
+  | host
+  | basePath
+  | securityDefinitionsBasic
+  | externalDocsDescription
+  | externalDocsUrl
+  | summary
+  | tags
+  | accept
+  | produce
+  | param
+  | success
+  | failure
+  | response
+  | header
+  | router
+  | extensions
+  ;
+
 title: TITLE TEXT;
 version: VERSION TEXT;
 description: DESCRIPTION TEXT;

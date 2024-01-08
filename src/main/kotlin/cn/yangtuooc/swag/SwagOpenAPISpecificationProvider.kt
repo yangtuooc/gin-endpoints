@@ -16,8 +16,11 @@ package cn.yangtuooc.swag
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
 import cn.yangtuooc.gin.endpoints.OpenAPISpecificationProvider
+import com.goide.documentation.GoDocumentationProvider
 import com.goide.psi.GoFile
 import com.intellij.microservices.oas.OpenApiSpecification
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
 
 /**
  * @author yangtuo
@@ -28,6 +31,12 @@ class SwagOpenAPISpecificationProvider(
 ) : OpenAPISpecificationProvider {
 
     override fun getOpenAPISpecification(): OpenApiSpecification? {
-        return null
+        val comments =
+            GoDocumentationProvider.getCommentsForElement(endpoint.getDocumentationPsiElement())
+        val statements = comments.map { comment -> comment.text.trimStart('/') }
+        val lexer = SwagLexer(CharStreams.fromString(statements.joinToString("\n")))
+        val parser = SwagParser(CommonTokenStream(lexer))
+        val visitor = OpenApiSpecificationVisitor()
+        return visitor.visitStatement(parser.statement())
     }
 }

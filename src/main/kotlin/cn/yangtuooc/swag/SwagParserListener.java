@@ -8,6 +8,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface SwagParserListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link SwagParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatement(SwagParser.StatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwagParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatement(SwagParser.StatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SwagParser#title}.
 	 * @param ctx the parse tree
 	 */

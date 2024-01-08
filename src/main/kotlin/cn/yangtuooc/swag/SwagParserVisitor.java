@@ -11,6 +11,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface SwagParserVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link SwagParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatement(SwagParser.StatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SwagParser#title}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
