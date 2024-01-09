@@ -1,21 +1,21 @@
-// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/SwagParser.g4 by ANTLR 4.13.1
-package cn.yangtuooc.swag
+// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/Swag.g4 by ANTLR 4.13.1
+package cn.yangtuooc.swag.grammar
 
 import org.antlr.v4.kotlinruntime.tree.AbstractParseTreeVisitor
 
 /**
- * This class provides an empty implementation of [SwagParserVisitor],
+ * This class provides an empty implementation of [SwagVisitor],
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
  * @param T The return type of the visit operation.
  *   Use [Unit] for operations with no return type
  */
-public open class SwagParserBaseVisitor<T> : AbstractParseTreeVisitor<T>(), SwagParserVisitor<T> {
+public open class SwagBaseVisitor<T> : AbstractParseTreeVisitor<T>(), SwagVisitor<T> {
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
-    override fun visitStatement(ctx: SwagParser.StatementContext): T {
+    override fun visitSwag(ctx: SwagParser.SwagContext): T {
         return this.visitChildren(ctx)!!
     }
     /**
@@ -87,24 +87,6 @@ public open class SwagParserBaseVisitor<T> : AbstractParseTreeVisitor<T>(), Swag
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
-    override fun visitSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext): T {
-        return this.visitChildren(ctx)!!
-    }
-    /**
-     * The default implementation returns the result of calling [visitChildren] on [ctx].
-     */
-    override fun visitExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext): T {
-        return this.visitChildren(ctx)!!
-    }
-    /**
-     * The default implementation returns the result of calling [visitChildren] on [ctx].
-     */
-    override fun visitExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext): T {
-        return this.visitChildren(ctx)!!
-    }
-    /**
-     * The default implementation returns the result of calling [visitChildren] on [ctx].
-     */
     override fun visitSummary(ctx: SwagParser.SummaryContext): T {
         return this.visitChildren(ctx)!!
     }
@@ -141,13 +123,19 @@ public open class SwagParserBaseVisitor<T> : AbstractParseTreeVisitor<T>(), Swag
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
+    override fun visitIsMandatory(ctx: SwagParser.IsMandatoryContext): T {
+        return this.visitChildren(ctx)!!
+    }
+    /**
+     * The default implementation returns the result of calling [visitChildren] on [ctx].
+     */
     override fun visitComment(ctx: SwagParser.CommentContext): T {
         return this.visitChildren(ctx)!!
     }
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
-    override fun visitIsMandatory(ctx: SwagParser.IsMandatoryContext): T {
+    override fun visitAttributes(ctx: SwagParser.AttributesContext): T {
         return this.visitChildren(ctx)!!
     }
     /**
@@ -177,25 +165,31 @@ public open class SwagParserBaseVisitor<T> : AbstractParseTreeVisitor<T>(), Swag
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
-    override fun visitRouter(ctx: SwagParser.RouterContext): T {
-        return this.visitChildren(ctx)!!
-    }
-    /**
-     * The default implementation returns the result of calling [visitChildren] on [ctx].
-     */
-    override fun visitExtensions(ctx: SwagParser.ExtensionsContext): T {
-        return this.visitChildren(ctx)!!
-    }
-    /**
-     * The default implementation returns the result of calling [visitChildren] on [ctx].
-     */
     override fun visitReturnCode(ctx: SwagParser.ReturnCodeContext): T {
         return this.visitChildren(ctx)!!
     }
     /**
      * The default implementation returns the result of calling [visitChildren] on [ctx].
      */
+    override fun visitRouter(ctx: SwagParser.RouterContext): T {
+        return this.visitChildren(ctx)!!
+    }
+    /**
+     * The default implementation returns the result of calling [visitChildren] on [ctx].
+     */
     override fun visitPath(ctx: SwagParser.PathContext): T {
+        return this.visitChildren(ctx)!!
+    }
+    /**
+     * The default implementation returns the result of calling [visitChildren] on [ctx].
+     */
+    override fun visitHttpMethod(ctx: SwagParser.HttpMethodContext): T {
+        return this.visitChildren(ctx)!!
+    }
+    /**
+     * The default implementation returns the result of calling [visitChildren] on [ctx].
+     */
+    override fun visitExtensions(ctx: SwagParser.ExtensionsContext): T {
         return this.visitChildren(ctx)!!
     }
     /**

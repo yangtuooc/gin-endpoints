@@ -1,25 +1,25 @@
-// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/SwagParser.g4 by ANTLR 4.13.1
-package cn.yangtuooc.swag
+// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/Swag.g4 by ANTLR 4.13.1
+package cn.yangtuooc.swag.grammar
 
 import org.antlr.v4.kotlinruntime.tree.ParseTreeListener
 
 /**
  * This interface defines a complete listener for a parse tree produced by [SwagParser].
  */
-public interface SwagParserListener : ParseTreeListener {
+public interface SwagListener : ParseTreeListener {
     /**
-     * Enter a parse tree produced by [SwagParser.statement].
+     * Enter a parse tree produced by [SwagParser.swag].
      *
      * @param ctx The parse tree
      */
-    public fun enterStatement(ctx: SwagParser.StatementContext)
+    public fun enterSwag(ctx: SwagParser.SwagContext)
 
     /**
-     * Exit a parse tree produced by [SwagParser.statement].
+     * Exit a parse tree produced by [SwagParser.swag].
      *
      * @param ctx The parse tree
      */
-    public fun exitStatement(ctx: SwagParser.StatementContext)
+    public fun exitSwag(ctx: SwagParser.SwagContext)
     /**
      * Enter a parse tree produced by [SwagParser.title].
      *
@@ -164,45 +164,6 @@ public interface SwagParserListener : ParseTreeListener {
      */
     public fun exitBasePath(ctx: SwagParser.BasePathContext)
     /**
-     * Enter a parse tree produced by [SwagParser.securityDefinitionsBasic].
-     *
-     * @param ctx The parse tree
-     */
-    public fun enterSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext)
-
-    /**
-     * Exit a parse tree produced by [SwagParser.securityDefinitionsBasic].
-     *
-     * @param ctx The parse tree
-     */
-    public fun exitSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext)
-    /**
-     * Enter a parse tree produced by [SwagParser.externalDocsDescription].
-     *
-     * @param ctx The parse tree
-     */
-    public fun enterExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext)
-
-    /**
-     * Exit a parse tree produced by [SwagParser.externalDocsDescription].
-     *
-     * @param ctx The parse tree
-     */
-    public fun exitExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext)
-    /**
-     * Enter a parse tree produced by [SwagParser.externalDocsUrl].
-     *
-     * @param ctx The parse tree
-     */
-    public fun enterExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext)
-
-    /**
-     * Exit a parse tree produced by [SwagParser.externalDocsUrl].
-     *
-     * @param ctx The parse tree
-     */
-    public fun exitExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext)
-    /**
      * Enter a parse tree produced by [SwagParser.summary].
      *
      * @param ctx The parse tree
@@ -281,6 +242,19 @@ public interface SwagParserListener : ParseTreeListener {
      */
     public fun exitParam(ctx: SwagParser.ParamContext)
     /**
+     * Enter a parse tree produced by [SwagParser.isMandatory].
+     *
+     * @param ctx The parse tree
+     */
+    public fun enterIsMandatory(ctx: SwagParser.IsMandatoryContext)
+
+    /**
+     * Exit a parse tree produced by [SwagParser.isMandatory].
+     *
+     * @param ctx The parse tree
+     */
+    public fun exitIsMandatory(ctx: SwagParser.IsMandatoryContext)
+    /**
      * Enter a parse tree produced by [SwagParser.comment].
      *
      * @param ctx The parse tree
@@ -294,18 +268,18 @@ public interface SwagParserListener : ParseTreeListener {
      */
     public fun exitComment(ctx: SwagParser.CommentContext)
     /**
-     * Enter a parse tree produced by [SwagParser.isMandatory].
+     * Enter a parse tree produced by [SwagParser.attributes].
      *
      * @param ctx The parse tree
      */
-    public fun enterIsMandatory(ctx: SwagParser.IsMandatoryContext)
+    public fun enterAttributes(ctx: SwagParser.AttributesContext)
 
     /**
-     * Exit a parse tree produced by [SwagParser.isMandatory].
+     * Exit a parse tree produced by [SwagParser.attributes].
      *
      * @param ctx The parse tree
      */
-    public fun exitIsMandatory(ctx: SwagParser.IsMandatoryContext)
+    public fun exitAttributes(ctx: SwagParser.AttributesContext)
     /**
      * Enter a parse tree produced by [SwagParser.success].
      *
@@ -359,32 +333,6 @@ public interface SwagParserListener : ParseTreeListener {
      */
     public fun exitHeader(ctx: SwagParser.HeaderContext)
     /**
-     * Enter a parse tree produced by [SwagParser.router].
-     *
-     * @param ctx The parse tree
-     */
-    public fun enterRouter(ctx: SwagParser.RouterContext)
-
-    /**
-     * Exit a parse tree produced by [SwagParser.router].
-     *
-     * @param ctx The parse tree
-     */
-    public fun exitRouter(ctx: SwagParser.RouterContext)
-    /**
-     * Enter a parse tree produced by [SwagParser.extensions].
-     *
-     * @param ctx The parse tree
-     */
-    public fun enterExtensions(ctx: SwagParser.ExtensionsContext)
-
-    /**
-     * Exit a parse tree produced by [SwagParser.extensions].
-     *
-     * @param ctx The parse tree
-     */
-    public fun exitExtensions(ctx: SwagParser.ExtensionsContext)
-    /**
      * Enter a parse tree produced by [SwagParser.returnCode].
      *
      * @param ctx The parse tree
@@ -398,6 +346,19 @@ public interface SwagParserListener : ParseTreeListener {
      */
     public fun exitReturnCode(ctx: SwagParser.ReturnCodeContext)
     /**
+     * Enter a parse tree produced by [SwagParser.router].
+     *
+     * @param ctx The parse tree
+     */
+    public fun enterRouter(ctx: SwagParser.RouterContext)
+
+    /**
+     * Exit a parse tree produced by [SwagParser.router].
+     *
+     * @param ctx The parse tree
+     */
+    public fun exitRouter(ctx: SwagParser.RouterContext)
+    /**
      * Enter a parse tree produced by [SwagParser.path].
      *
      * @param ctx The parse tree
@@ -410,6 +371,32 @@ public interface SwagParserListener : ParseTreeListener {
      * @param ctx The parse tree
      */
     public fun exitPath(ctx: SwagParser.PathContext)
+    /**
+     * Enter a parse tree produced by [SwagParser.httpMethod].
+     *
+     * @param ctx The parse tree
+     */
+    public fun enterHttpMethod(ctx: SwagParser.HttpMethodContext)
+
+    /**
+     * Exit a parse tree produced by [SwagParser.httpMethod].
+     *
+     * @param ctx The parse tree
+     */
+    public fun exitHttpMethod(ctx: SwagParser.HttpMethodContext)
+    /**
+     * Enter a parse tree produced by [SwagParser.extensions].
+     *
+     * @param ctx The parse tree
+     */
+    public fun enterExtensions(ctx: SwagParser.ExtensionsContext)
+
+    /**
+     * Exit a parse tree produced by [SwagParser.extensions].
+     *
+     * @param ctx The parse tree
+     */
+    public fun exitExtensions(ctx: SwagParser.ExtensionsContext)
     /**
      * Enter a parse tree produced by [SwagParser.json].
      *

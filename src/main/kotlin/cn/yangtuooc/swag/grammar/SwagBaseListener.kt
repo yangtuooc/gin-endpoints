@@ -1,25 +1,25 @@
-// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/SwagParser.g4 by ANTLR 4.13.1
-package cn.yangtuooc.swag
+// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/Swag.g4 by ANTLR 4.13.1
+package cn.yangtuooc.swag.grammar
 
 import org.antlr.v4.kotlinruntime.ParserRuleContext
 import org.antlr.v4.kotlinruntime.tree.ErrorNode
 import org.antlr.v4.kotlinruntime.tree.TerminalNode
 
 /**
- * This class provides an empty implementation of [SwagParserListener],
+ * This class provides an empty implementation of [SwagListener],
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public open class SwagParserBaseListener : SwagParserListener {
+public open class SwagBaseListener : SwagListener {
     /**
      * The default implementation does nothing.
      */
-    override fun enterStatement(ctx: SwagParser.StatementContext) {}
+    override fun enterSwag(ctx: SwagParser.SwagContext) {}
 
     /**
      * The default implementation does nothing.
      */
-    override fun exitStatement(ctx: SwagParser.StatementContext) {}
+    override fun exitSwag(ctx: SwagParser.SwagContext) {}
 
     /**
      * The default implementation does nothing.
@@ -134,36 +134,6 @@ public open class SwagParserBaseListener : SwagParserListener {
     /**
      * The default implementation does nothing.
      */
-    override fun enterSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun exitSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun enterExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun exitExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun enterExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun exitExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
     override fun enterSummary(ctx: SwagParser.SummaryContext) {}
 
     /**
@@ -224,6 +194,16 @@ public open class SwagParserBaseListener : SwagParserListener {
     /**
      * The default implementation does nothing.
      */
+    override fun enterIsMandatory(ctx: SwagParser.IsMandatoryContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun exitIsMandatory(ctx: SwagParser.IsMandatoryContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
     override fun enterComment(ctx: SwagParser.CommentContext) {}
 
     /**
@@ -234,12 +214,12 @@ public open class SwagParserBaseListener : SwagParserListener {
     /**
      * The default implementation does nothing.
      */
-    override fun enterIsMandatory(ctx: SwagParser.IsMandatoryContext) {}
+    override fun enterAttributes(ctx: SwagParser.AttributesContext) {}
 
     /**
      * The default implementation does nothing.
      */
-    override fun exitIsMandatory(ctx: SwagParser.IsMandatoryContext) {}
+    override fun exitAttributes(ctx: SwagParser.AttributesContext) {}
 
     /**
      * The default implementation does nothing.
@@ -284,26 +264,6 @@ public open class SwagParserBaseListener : SwagParserListener {
     /**
      * The default implementation does nothing.
      */
-    override fun enterRouter(ctx: SwagParser.RouterContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun exitRouter(ctx: SwagParser.RouterContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun enterExtensions(ctx: SwagParser.ExtensionsContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
-    override fun exitExtensions(ctx: SwagParser.ExtensionsContext) {}
-
-    /**
-     * The default implementation does nothing.
-     */
     override fun enterReturnCode(ctx: SwagParser.ReturnCodeContext) {}
 
     /**
@@ -314,12 +274,42 @@ public open class SwagParserBaseListener : SwagParserListener {
     /**
      * The default implementation does nothing.
      */
+    override fun enterRouter(ctx: SwagParser.RouterContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun exitRouter(ctx: SwagParser.RouterContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
     override fun enterPath(ctx: SwagParser.PathContext) {}
 
     /**
      * The default implementation does nothing.
      */
     override fun exitPath(ctx: SwagParser.PathContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun enterHttpMethod(ctx: SwagParser.HttpMethodContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun exitHttpMethod(ctx: SwagParser.HttpMethodContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun enterExtensions(ctx: SwagParser.ExtensionsContext) {}
+
+    /**
+     * The default implementation does nothing.
+     */
+    override fun exitExtensions(ctx: SwagParser.ExtensionsContext) {}
 
     /**
      * The default implementation does nothing.

@@ -1,5 +1,5 @@
-// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/SwagParser.g4 by ANTLR 4.13.1
-package cn.yangtuooc.swag
+// Generated from /Users/yangtuo/projects/open-source/gin-endpoints/src/main/kotlin/cn/yangtuooc/swag/Swag.g4 by ANTLR 4.13.1
+package cn.yangtuooc.swag.grammar
 
 import org.antlr.v4.kotlinruntime.tree.ParseTreeVisitor
 
@@ -9,14 +9,14 @@ import org.antlr.v4.kotlinruntime.tree.ParseTreeVisitor
  * @param T The return type of the visit operation.
  *   Use [Unit] for operations with no return type
  */
-public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
+public interface SwagVisitor<T> : ParseTreeVisitor<T> {
     /**
-     * Visit a parse tree produced by [SwagParser.statement].
+     * Visit a parse tree produced by [SwagParser.swag].
      *
      * @param ctx The parse tree
      * @return The visitor result
      */
-    public fun visitStatement(ctx: SwagParser.StatementContext): T
+    public fun visitSwag(ctx: SwagParser.SwagContext): T
     /**
      * Visit a parse tree produced by [SwagParser.title].
      *
@@ -95,27 +95,6 @@ public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
      */
     public fun visitBasePath(ctx: SwagParser.BasePathContext): T
     /**
-     * Visit a parse tree produced by [SwagParser.securityDefinitionsBasic].
-     *
-     * @param ctx The parse tree
-     * @return The visitor result
-     */
-    public fun visitSecurityDefinitionsBasic(ctx: SwagParser.SecurityDefinitionsBasicContext): T
-    /**
-     * Visit a parse tree produced by [SwagParser.externalDocsDescription].
-     *
-     * @param ctx The parse tree
-     * @return The visitor result
-     */
-    public fun visitExternalDocsDescription(ctx: SwagParser.ExternalDocsDescriptionContext): T
-    /**
-     * Visit a parse tree produced by [SwagParser.externalDocsUrl].
-     *
-     * @param ctx The parse tree
-     * @return The visitor result
-     */
-    public fun visitExternalDocsUrl(ctx: SwagParser.ExternalDocsUrlContext): T
-    /**
      * Visit a parse tree produced by [SwagParser.summary].
      *
      * @param ctx The parse tree
@@ -158,6 +137,13 @@ public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
      */
     public fun visitParam(ctx: SwagParser.ParamContext): T
     /**
+     * Visit a parse tree produced by [SwagParser.isMandatory].
+     *
+     * @param ctx The parse tree
+     * @return The visitor result
+     */
+    public fun visitIsMandatory(ctx: SwagParser.IsMandatoryContext): T
+    /**
      * Visit a parse tree produced by [SwagParser.comment].
      *
      * @param ctx The parse tree
@@ -165,12 +151,12 @@ public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
      */
     public fun visitComment(ctx: SwagParser.CommentContext): T
     /**
-     * Visit a parse tree produced by [SwagParser.isMandatory].
+     * Visit a parse tree produced by [SwagParser.attributes].
      *
      * @param ctx The parse tree
      * @return The visitor result
      */
-    public fun visitIsMandatory(ctx: SwagParser.IsMandatoryContext): T
+    public fun visitAttributes(ctx: SwagParser.AttributesContext): T
     /**
      * Visit a parse tree produced by [SwagParser.success].
      *
@@ -200,20 +186,6 @@ public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
      */
     public fun visitHeader(ctx: SwagParser.HeaderContext): T
     /**
-     * Visit a parse tree produced by [SwagParser.router].
-     *
-     * @param ctx The parse tree
-     * @return The visitor result
-     */
-    public fun visitRouter(ctx: SwagParser.RouterContext): T
-    /**
-     * Visit a parse tree produced by [SwagParser.extensions].
-     *
-     * @param ctx The parse tree
-     * @return The visitor result
-     */
-    public fun visitExtensions(ctx: SwagParser.ExtensionsContext): T
-    /**
      * Visit a parse tree produced by [SwagParser.returnCode].
      *
      * @param ctx The parse tree
@@ -221,12 +193,33 @@ public interface SwagParserVisitor<T> : ParseTreeVisitor<T> {
      */
     public fun visitReturnCode(ctx: SwagParser.ReturnCodeContext): T
     /**
+     * Visit a parse tree produced by [SwagParser.router].
+     *
+     * @param ctx The parse tree
+     * @return The visitor result
+     */
+    public fun visitRouter(ctx: SwagParser.RouterContext): T
+    /**
      * Visit a parse tree produced by [SwagParser.path].
      *
      * @param ctx The parse tree
      * @return The visitor result
      */
     public fun visitPath(ctx: SwagParser.PathContext): T
+    /**
+     * Visit a parse tree produced by [SwagParser.httpMethod].
+     *
+     * @param ctx The parse tree
+     * @return The visitor result
+     */
+    public fun visitHttpMethod(ctx: SwagParser.HttpMethodContext): T
+    /**
+     * Visit a parse tree produced by [SwagParser.extensions].
+     *
+     * @param ctx The parse tree
+     * @return The visitor result
+     */
+    public fun visitExtensions(ctx: SwagParser.ExtensionsContext): T
     /**
      * Visit a parse tree produced by [SwagParser.json].
      *

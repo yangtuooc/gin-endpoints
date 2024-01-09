@@ -14,14 +14,16 @@
 
 package cn.yangtuooc.swag
 
+import cn.yangtuooc.swag.grammar.SwagBaseVisitor
+import cn.yangtuooc.swag.grammar.SwagParser
 import com.intellij.microservices.oas.OpenApiSpecification
 
 /**
  * @author yangtuo
  */
-class OpenApiSpecificationVisitor : SwagParserBaseVisitor<OpenApiSpecification?>() {
+class OpenApiSpecificationVisitor : SwagBaseVisitor<OpenApiSpecification?>() {
 
-    override fun visitStatement(ctx: SwagParser.StatementContext): OpenApiSpecification? {
+    override fun visitSwag(ctx: SwagParser.SwagContext): OpenApiSpecification? {
         println(ctx.findSummary()?.text)
         return null
     }
