@@ -12,20 +12,9 @@
  * copies or substantial portions of the Software.
  */
 
-package cn.yangtuooc.swag
-
-import cn.yangtuooc.swag.grammar.SwagBaseVisitor
-import cn.yangtuooc.swag.grammar.SwagParser
-import com.intellij.microservices.oas.OpenApiSpecification
+package cn.yangtuooc.swag.specifications.general
 
 /**
  * @author yangtuo
  */
-class OpenApiSpecificationVisitor : SwagBaseVisitor<OpenApiSpecification?>() {
-
-    override fun visitSwag(ctx: SwagParser.SwagContext): OpenApiSpecification? {
-        println(ctx.findSummary()?.text)
-        return null
-    }
-}
-
+data class Host(val value: String)

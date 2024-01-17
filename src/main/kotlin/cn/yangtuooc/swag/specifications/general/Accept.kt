@@ -12,22 +12,10 @@
  * copies or substantial portions of the Software.
  */
 
-package cn.yangtuooc.swag
+package cn.yangtuooc.swag.specifications.general
 
-import cn.yangtuooc.gin.endpoints.GinUrlData
-import cn.yangtuooc.gin.endpoints.OpenAPISpecificationProvider
-import com.goide.psi.GoFile
-import com.intellij.microservices.oas.OpenApiSpecification
 
 /**
  * @author yangtuo
  */
-class SwagOpenAPISpecificationProvider(
-    val group: GoFile,
-    private val endpoint: GinUrlData
-) : OpenAPISpecificationProvider {
-
-    override fun getOpenAPISpecification(): OpenApiSpecification? {
-        return null
-    }
-}
+data class Accept(val value: cn.yangtuooc.swag.specifications.general.MimeType)
