@@ -92,24 +92,6 @@ IDENTIFIER                  : LETTER LETTER_OR_DIGIT* ;
 
 DIGITS                      : [0-9]+ ;
 
-
-REQUEST_TYPE                :'query'
-                            |'path'
-                            |'header'
-                            |'body'
-                            |'formData'
-                            ;
-
-DATA_TYPE                   :'string'
-                            |'integer'
-                            |'number'
-                            |'boolean'
-                            |'array'
-                            |'file'
-                            |'object'
-                            | IDENTIFIER (DOT IDENTIFIER)*
-                            ;
-
 COLLECTION_FORMAT_MARK      : 'collectionFormat'
                             ;
 
@@ -210,6 +192,9 @@ AT_PRODUCE
   : AT PRODUCE -> pushMode(MIME_MODE)
   ;
 
+AT_PARAM
+  : AT PARAM -> pushMode(PARAM_MODE)
+  ;
 
 mode COMMENT_MODE;
 
@@ -257,3 +242,98 @@ fragment MIME                        :'json'
                                      |'image/gif'
                                      ;
 
+mode PARAM_MODE;
+
+PARAM_NAME
+  : IDENTIFIER -> pushMode(PARAM_IN_MODE)
+  ;
+
+WS_PARAM
+  : [ \t\r\n]+ -> skip
+  ;
+
+mode PARAM_IN_MODE;
+
+PARAM_IN
+  : REQUEST_TYPE -> pushMode(DATA_TYPE_MODE)
+  ;
+
+fragment REQUEST_TYPE       :'query'
+                            |'path'
+                            |'header'
+                            |'body'
+                            |'formData'
+                            ;
+WS_PARAM_IN
+  : [ \t\r\n]+ -> skip
+  ;
+
+mode DATA_TYPE_MODE;
+
+PARAM_DATA_TYPE
+  : DATA_TYPE -> pushMode(MANDATORY_MODE)
+  ;
+
+DATA_TYPE                      :'string'
+                               |'integer'
+                               |'number'
+                               |'boolean'
+                               |'array'
+                               |'file'
+                               |'object'
+                               | IDENTIFIER
+                               | IDENTIFIER DOT IDENTIFIER
+                               ;
+
+WS_DATA_TYPE
+  : [ \t\r\n]+ -> skip
+  ;
+
+mode MANDATORY_MODE;
+
+MANDATORY
+  : MANDATORY_MARK -> pushMode(PARAM_COMMENT_MODE)
+  ;
+
+MANDATORY_MARK
+  : TRUE
+  | FALSE
+  ;
+
+WS_MANDATORY
+  : [ \t\r\n]+ -> skip
+  ;
+
+mode PARAM_COMMENT_MODE;
+
+PARAM_COMMENT
+  : STRING -> pushMode(ATTRIBUTE_MODE)
+  ;
+
+WS_PARAM_COMMENT
+  : [ \t\r\n]+ -> skip
+  ;
+
+mode ATTRIBUTE_MODE;
+
+ATTRIBUTE_VALIDATE
+  : 'validate' LEFT_PAREN ATTRIBUTE_VALIDATE_VALUES RIGHT_PAREN
+  ;
+
+ATTRIBUTE_MAXIMUM
+  : 'maximum' LEFT_PAREN NUMBER RIGHT_PAREN
+  ;
+
+ATTRIBUTE_MINIMUM
+  : 'minimum' LEFT_PAREN NUMBER RIGHT_PAREN
+  ;
+
+
+ATTRIBUTE_VALIDATE_VALUES
+  : 'required'
+  | 'optional'
+  ;
+
+WS_ATTRIBUTE
+  : [ \t\r\n]+ -> skip
+  ;

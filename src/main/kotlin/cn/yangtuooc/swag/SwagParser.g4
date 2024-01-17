@@ -30,39 +30,51 @@ swag
   ;
 
 param
-  : paramAnnotation paramName paramType dataType isMandatory comment attributes*
+  : paramAnnotation paramName paramType dataType isMandatory comment attributes
   ;
 
 paramAnnotation
-  : AT PARAM
+  : AT_PARAM
   ;
 paramName
-  : IDENTIFIER
+  : PARAM_NAME
   ;
 paramType
-  : REQUEST_TYPE
+  : PARAM_IN
   ;
 dataType
-  : DATA_TYPE
+  : PARAM_DATA_TYPE
   ;
 isMandatory
-  : TRUE
-  | FALSE
+  : MANDATORY
   ;
 
 comment
-  :
+  : PARAM_COMMENT
   ;
 
 attributes
-  : DEFAULT LEFT_PAREN DATA_TYPE RIGHT_PAREN
-  | MAXIMUM LEFT_PAREN NUMBER RIGHT_PAREN
-  | MINIMUM LEFT_PAREN NUMBER RIGHT_PAREN
-  | MAX_LENGTH LEFT_PAREN NUMBER RIGHT_PAREN
-  | MIN_LENGTH LEFT_PAREN NUMBER RIGHT_PAREN
-  | ENUMS LEFT_PAREN IDENTIFIER (COMMA IDENTIFIER)* RIGHT_PAREN
-  | FORMAT LEFT_PAREN IDENTIFIER RIGHT_PAREN
-  | COLLECTION_FORMAT_MARK LEFT_PAREN COLLECTION_FORMAT RIGHT_PAREN
+  : attribute+
+  ;
+
+attribute
+  : validate
+  | maximum
+  | minimum
+  ;
+
+minimum
+  : ATTRIBUTE_MINIMUM
+  ;
+
+maximum
+  : ATTRIBUTE_MAXIMUM
+  ;
+
+
+
+validate
+  : ATTRIBUTE_VALIDATE
   ;
 
 produce
