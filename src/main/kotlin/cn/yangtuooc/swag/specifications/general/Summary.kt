@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class Summary(val value: String)
+data class Summary(val value: String) {
+    companion object {
+        const val ANNOTATION = "@summary"
+    }
+}

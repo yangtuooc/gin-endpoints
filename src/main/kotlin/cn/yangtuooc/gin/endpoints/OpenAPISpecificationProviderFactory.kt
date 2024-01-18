@@ -22,7 +22,7 @@ import com.goide.psi.GoFile
  */
 object OpenAPISpecificationProviderFactory {
 
-    fun create(group: GoFile, endpoint: GinUrlData): OpenAPISpecificationProvider {
-        return SwagOpenAPISpecificationProvider(group, endpoint)
+    fun create(): OpenAPISpecificationProvider {
+        return SwagOpenAPISpecificationProvider()
     }
 }

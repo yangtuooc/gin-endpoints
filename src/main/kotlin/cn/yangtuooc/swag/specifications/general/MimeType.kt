@@ -33,4 +33,10 @@ enum class MimeType(val value: String, val alias: String) {
     GIF("image/gif", "gif"),
     ;
 
+    companion object {
+        fun from(value: String): MimeType {
+            return values().firstOrNull { it.value == value }
+                ?: throw IllegalArgumentException("Unknown MimeType $value")
+        }
+    }
 }

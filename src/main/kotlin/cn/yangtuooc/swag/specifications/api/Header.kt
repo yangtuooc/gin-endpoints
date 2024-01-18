@@ -12,9 +12,15 @@
  * copies or substantial portions of the Software.
  */
 
-package cn.yangtuooc.swag.specifications.general
+package cn.yangtuooc.swag.specifications.api
 
 /**
  * @author yangtuo
  */
-data class Produce(val value: cn.yangtuooc.swag.specifications.general.MimeType)
+class Header(code: Int, paramType: DataType, dataType: DataType, comment: String) :
+    Response(code, paramType, dataType, comment) {
+
+    companion object {
+        const val ANNOTATION = "@header"
+    }
+}

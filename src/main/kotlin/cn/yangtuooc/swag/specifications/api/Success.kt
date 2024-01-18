@@ -17,15 +17,10 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Router(val path: String, val method: HttpMethod) {
+class Success(code: Int, paramType: DataType, dataType: DataType, comment: String) :
+    Response(code, paramType, dataType, comment) {
+
     companion object {
-        const val ANNOTATION = "@Router"
-    }
-}
-
-class RouterParser(private val content: String) {
-
-    fun parse(): Router {
-        return Router("/", HttpMethod.GET)
+        const val ANNOTATION = "@success"
     }
 }

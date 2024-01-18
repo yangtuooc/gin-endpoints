@@ -17,9 +17,33 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Response(
-    val code: Int,
-    val paramType: DataType,
-    val dataType: DataType,
-    val comment: String
-)
+open class Response(
+    private val code: Int,
+    private val paramType: DataType,
+    private val dataType: DataType,
+    private val comment: String
+) {
+    companion object {
+        const val ANNOTATION = "@response"
+    }
+
+    fun success(): Success {
+        return Success(code, paramType, dataType, comment)
+    }
+
+    fun failure(): Failure {
+        return Failure(code, paramType, dataType, comment)
+    }
+
+    fun header(): Header {
+        return Header(code, paramType, dataType, comment)
+    }
+}
+
+class ResponseParser(private val content: String) {
+
+    fun parse(): Response {
+        return Response(200, DataType.STRING, DataType.STRING, "")
+    }
+}
+

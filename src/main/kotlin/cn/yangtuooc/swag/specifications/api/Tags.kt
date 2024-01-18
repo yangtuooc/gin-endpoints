@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Tags(val values: List<String>)
+data class Tags(val values: List<String>) {
+    companion object {
+        const val ANNOTATION = "@tags"
+    }
+}

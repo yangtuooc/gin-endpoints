@@ -24,8 +24,18 @@ data class Param(
     val required: Boolean,
     val comment: String,
     val attributes: List<Attribute>
-)
+) {
+    companion object {
+        const val ANNOTATION = "@param"
+    }
+}
 
+class ParamParser(private val content: String) {
+    fun parse(): Param {
+        val lines = content.split("\n")
+        return Param("", ParamIn.PATH, "", true, "", emptyList())
+    }
+}
 
 data class Attribute(
     val name: String,

@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class TagName(val name: String)
+data class TagName(val name: String) {
+    companion object {
+        const val ANNOTATION = "@tag.name"
+    }
+}

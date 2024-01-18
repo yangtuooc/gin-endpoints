@@ -12,20 +12,13 @@
  * copies or substantial portions of the Software.
  */
 
-package cn.yangtuooc.swag.specifications.api
+package cn.yangtuooc.swag.specifications.general
 
 /**
  * @author yangtuo
  */
-data class Router(val path: String, val method: HttpMethod) {
+data class Produces(val values: List<MimeType>) {
     companion object {
-        const val ANNOTATION = "@Router"
-    }
-}
-
-class RouterParser(private val content: String) {
-
-    fun parse(): Router {
-        return Router("/", HttpMethod.GET)
+        const val ANNOTATION = "@produce"
     }
 }

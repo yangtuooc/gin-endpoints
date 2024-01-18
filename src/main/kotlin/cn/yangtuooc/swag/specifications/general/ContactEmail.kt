@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class ContactEmail(val value: String)
+data class ContactEmail(val value: String) {
+    companion object {
+        const val ANNOTATION = "@contact.email"
+    }
+}

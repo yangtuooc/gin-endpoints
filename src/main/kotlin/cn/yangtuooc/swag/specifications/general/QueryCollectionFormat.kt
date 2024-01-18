@@ -17,7 +17,11 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class QueryCollectionFormat(val value: CollectionFormat)
+data class QueryCollectionFormat(val value: CollectionFormat) {
+    companion object {
+        const val ANNOTATION = "@query.collection.format"
+    }
+}
 
 
 enum class CollectionFormat(val value: String) {
@@ -28,8 +32,15 @@ enum class CollectionFormat(val value: String) {
     MULTI("multi");
 
     companion object {
-        fun fromString(value: String): CollectionFormat? {
-            return values().find { it.value == value }
+        fun fromString(value: String): CollectionFormat {
+            return when (value) {
+                "csv" -> CSV
+                "ssv" -> SSV
+                "tsv" -> TSV
+                "pipes" -> PIPES
+                "multi" -> MULTI
+                else -> throw IllegalArgumentException("Unknown collection format: $value")
+            }
         }
     }
 }

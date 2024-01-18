@@ -14,12 +14,12 @@
 
 package cn.yangtuooc.gin.endpoints
 
+import com.goide.psi.GoFile
 import com.intellij.microservices.oas.OpenApiSpecification
 
 /**
  * @author yangtuo
  */
 interface OpenAPISpecificationProvider {
-
-    fun getOpenAPISpecification(): OpenApiSpecification?
+    fun getOpenApiSpecification(group: GoFile, endpoint: GinUrlData): OpenApiSpecification?
 }

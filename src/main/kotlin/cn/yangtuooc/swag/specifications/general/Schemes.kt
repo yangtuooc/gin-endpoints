@@ -17,7 +17,11 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class Schemes(val value: HttpScheme)
+data class Schemes(val values: List<HttpScheme>) {
+    companion object {
+        const val ANNOTATION = "@schemes"
+    }
+}
 
 enum class HttpScheme(val value: String) {
     HTTP("http"),
@@ -26,8 +30,12 @@ enum class HttpScheme(val value: String) {
     ;
 
     companion object {
-        fun fromString(value: String): cn.yangtuooc.swag.specifications.general.HttpScheme? {
-            return values().find { it.value == value }
+        fun fromString(value: String): cn.yangtuooc.swag.specifications.general.HttpScheme {
+            return when (value) {
+                "http" -> HTTP
+                "https" -> HTTPS
+                else -> throw IllegalArgumentException("Unknown HttpScheme value: $value")
+            }
         }
     }
 }

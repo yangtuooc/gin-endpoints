@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class Host(val value: String)
+data class Host(val value: String) {
+    companion object {
+        const val ANNOTATION = "@host"
+    }
+}

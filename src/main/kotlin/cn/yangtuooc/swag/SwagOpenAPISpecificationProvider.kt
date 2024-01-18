@@ -16,18 +16,19 @@ package cn.yangtuooc.swag
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
 import cn.yangtuooc.gin.endpoints.OpenAPISpecificationProvider
+import cn.yangtuooc.swag.specifications.SwagParser
+import com.goide.documentation.GoDocumentationProvider
 import com.goide.psi.GoFile
 import com.intellij.microservices.oas.OpenApiSpecification
 
 /**
  * @author yangtuo
  */
-class SwagOpenAPISpecificationProvider(
-    val group: GoFile,
-    private val endpoint: GinUrlData
-) : OpenAPISpecificationProvider {
-
-    override fun getOpenAPISpecification(): OpenApiSpecification? {
-        return null
+class SwagOpenAPISpecificationProvider : OpenAPISpecificationProvider {
+    override fun getOpenApiSpecification(group: GoFile, endpoint: GinUrlData): OpenApiSpecification? {
+        val element = endpoint.getDocumentationPsiElement() ?: return null
+        val comments = GoDocumentationProvider.getCommentsForElement(element)
+        val swag = SwagParser(comments).parse()
+        return swag.toOpenApiSpecification()
     }
 }

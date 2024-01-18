@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class LicenseName(val value: String)
+data class LicenseName(val value: String) {
+    companion object {
+        const val ANNOTATION = "@license.name"
+    }
+}

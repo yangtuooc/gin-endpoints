@@ -59,10 +59,8 @@ class GinEndpointsProvider : EndpointsUrlTargetProvider<GoFile, GinUrlData> {
         )
     }
 
-    override fun getOpenApiSpecification(
-        group: GoFile,
-        endpoint: GinUrlData
-    ): OpenApiSpecification? {
-        return OpenAPISpecificationProviderFactory.create(group, endpoint).getOpenAPISpecification()
+    override fun getOpenApiSpecification(group: GoFile, endpoint: GinUrlData): OpenApiSpecification? {
+        val provider = OpenAPISpecificationProviderFactory.create()
+        return provider.getOpenApiSpecification(group, endpoint)
     }
 }

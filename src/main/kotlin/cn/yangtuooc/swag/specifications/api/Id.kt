@@ -17,4 +17,8 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Id(val value: String)
+data class Id(val value: String) {
+    companion object {
+        const val ANNOTATION = "@id"
+    }
+}

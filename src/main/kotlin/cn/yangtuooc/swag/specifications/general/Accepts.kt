@@ -18,4 +18,8 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class Accept(val value: cn.yangtuooc.swag.specifications.general.MimeType)
+data class Accepts(val values: List<MimeType>) {
+    companion object {
+        const val ANNOTATION = "@accept"
+    }
+}
