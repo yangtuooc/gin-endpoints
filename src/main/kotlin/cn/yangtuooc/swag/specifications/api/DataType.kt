@@ -17,21 +17,21 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Param(
-    val name: String,
-    val paramIn: ParamIn,
-    val dataType: String,
-    val required: Boolean,
-    val comment: String,
-    val attributes: List<Attribute>
-)
+enum class DataType {
+    STRING, NUMBER, INTEGER, BOOLEAN, ARRAY, OBJECT, FILE;
 
-
-data class Attribute(
-    val name: String,
-    val value: String
-)
-
-
-
-
+    companion object {
+        fun fromString(value: String): DataType {
+            return when (value) {
+                "string" -> STRING
+                "number" -> NUMBER
+                "integer" -> INTEGER
+                "boolean" -> BOOLEAN
+                "array" -> ARRAY
+                "object" -> OBJECT
+                "file" -> FILE
+                else -> throw IllegalArgumentException("Unknown data type $value")
+            }
+        }
+    }
+}

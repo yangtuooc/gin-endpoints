@@ -17,21 +17,22 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Param(
-    val name: String,
-    val paramIn: ParamIn,
-    val dataType: String,
-    val required: Boolean,
-    val comment: String,
-    val attributes: List<Attribute>
-)
+enum class ParamIn {
+    PATH, QUERY, HEADER, COOKIE, BODY, FORM;
 
+    ;
 
-data class Attribute(
-    val name: String,
-    val value: String
-)
-
-
-
-
+    companion object {
+        fun fromString(value: String): ParamIn {
+            return when (value) {
+                "path" -> PATH
+                "query" -> QUERY
+                "header" -> HEADER
+                "cookie" -> COOKIE
+                "body" -> BODY
+                "formData" -> FORM
+                else -> throw IllegalArgumentException("Unknown param in $value")
+            }
+        }
+    }
+}

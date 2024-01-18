@@ -17,21 +17,9 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Param(
-    val name: String,
-    val paramIn: ParamIn,
-    val dataType: String,
-    val required: Boolean,
-    val comment: String,
-    val attributes: List<Attribute>
+data class Response(
+    val code: Int,
+    val paramType: DataType,
+    val dataType: DataType,
+    val comment: String
 )
-
-
-data class Attribute(
-    val name: String,
-    val value: String
-)
-
-
-
-

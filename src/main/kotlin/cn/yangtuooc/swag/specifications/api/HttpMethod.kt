@@ -17,21 +17,23 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-data class Param(
-    val name: String,
-    val paramIn: ParamIn,
-    val dataType: String,
-    val required: Boolean,
-    val comment: String,
-    val attributes: List<Attribute>
-)
+enum class HttpMethod {
+    GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
 
+    ;
 
-data class Attribute(
-    val name: String,
-    val value: String
-)
-
-
-
-
+    companion object {
+        fun fromString(method: String): HttpMethod {
+            return when (method.uppercase()) {
+                "GET" -> GET
+                "POST" -> POST
+                "PUT" -> PUT
+                "DELETE" -> DELETE
+                "PATCH" -> PATCH
+                "HEAD" -> HEAD
+                "OPTIONS" -> OPTIONS
+                else -> throw IllegalArgumentException("Unknown HTTP method $method")
+            }
+        }
+    }
+}
