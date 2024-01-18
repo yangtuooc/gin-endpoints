@@ -14,6 +14,8 @@
 
 package cn.yangtuooc.swag.specifications.api
 
+import com.intellij.microservices.oas.OasHttpMethod
+
 /**
  * @author yangtuo
  */
@@ -21,6 +23,18 @@ enum class HttpMethod {
     GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
 
     ;
+
+    fun toOasHttpMethod(): OasHttpMethod {
+        return when (this) {
+            GET -> OasHttpMethod.GET
+            POST -> OasHttpMethod.POST
+            PUT -> OasHttpMethod.PUT
+            DELETE -> OasHttpMethod.DELETE
+            PATCH -> OasHttpMethod.PATCH
+            HEAD -> OasHttpMethod.HEAD
+            OPTIONS -> OasHttpMethod.OPTIONS
+        }
+    }
 
     companion object {
         fun fromString(method: String): HttpMethod {

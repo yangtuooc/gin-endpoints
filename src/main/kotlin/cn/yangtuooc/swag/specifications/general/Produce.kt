@@ -17,8 +17,12 @@ package cn.yangtuooc.swag.specifications.general
 /**
  * @author yangtuo
  */
-data class Produces(val values: List<MimeType>) {
+data class Produce(val value: MimeType) {
     companion object {
         const val ANNOTATION = "@produce"
+    }
+
+    override fun toString(): String {
+        return value.value
     }
 }

@@ -59,8 +59,8 @@ class SwagParser(private val comments: List<PsiComment>) {
             LicenseUrl.ANNOTATION.lowercase() -> builder.licenseUrl(content)
             Host.ANNOTATION.lowercase() -> builder.host(content)
             BasePath.ANNOTATION.lowercase() -> builder.basePath(content)
-            Accepts.ANNOTATION.lowercase() -> builder.accepts(content.split(",").map { MimeType.from(it.trim()) })
-            Produces.ANNOTATION.lowercase() -> builder.produces(content.split(",").map { MimeType.from(it.trim()) })
+            Accept.ANNOTATION.lowercase() -> builder.accept(MimeType.from(content))
+            Produce.ANNOTATION.lowercase() -> builder.produce(MimeType.from(content))
             QueryCollectionFormat.ANNOTATION.lowercase() ->
                 builder.queryCollectionFormat(CollectionFormat.fromString(content))
 

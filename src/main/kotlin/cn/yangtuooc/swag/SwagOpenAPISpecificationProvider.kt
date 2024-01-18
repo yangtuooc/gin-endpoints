@@ -29,6 +29,6 @@ class SwagOpenAPISpecificationProvider : OpenAPISpecificationProvider {
         val element = endpoint.getDocumentationPsiElement() ?: return null
         val comments = GoDocumentationProvider.getCommentsForElement(element)
         val swag = SwagParser(comments).parse()
-        return swag.toOpenApiSpecification()
+        return SwagOpenApiSpecificationBuilder(group, endpoint, swag).build()
     }
 }

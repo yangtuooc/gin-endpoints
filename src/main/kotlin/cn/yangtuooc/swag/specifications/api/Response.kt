@@ -18,13 +18,29 @@ package cn.yangtuooc.swag.specifications.api
  * @author yangtuo
  */
 open class Response(
-    private val code: Int,
+    private val code: String,
     private val paramType: DataType,
-    private val dataType: DataType,
+    private val dataType: String,
     private val comment: String
 ) {
     companion object {
         const val ANNOTATION = "@response"
+    }
+
+    fun paramType(): DataType {
+        return paramType
+    }
+
+    fun dataType(): String {
+        return dataType
+    }
+
+    fun code(): String {
+        return code
+    }
+
+    fun comment(): String {
+        return comment
     }
 
     fun success(): Success {
@@ -43,7 +59,7 @@ open class Response(
 class ResponseParser(private val content: String) {
 
     fun parse(): Response {
-        return Response(200, DataType.STRING, DataType.STRING, "")
+        return Response("200", DataType.STRING, "", "")
     }
 }
 

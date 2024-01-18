@@ -17,8 +17,6 @@ package cn.yangtuooc.swag
 import cn.yangtuooc.swag.specifications.api.*
 import cn.yangtuooc.swag.specifications.general.*
 import cn.yangtuooc.swag.specifications.general.Summary
-import com.intellij.microservices.oas.OpenApiSpecification
-import kotlin.reflect.KClass
 
 /**
  * @author yangtuo
@@ -40,8 +38,8 @@ class Swag {
     var licenseUrl: LicenseUrl? = null
     var host: Host? = null
     var basePath: BasePath? = null
-    var accepts: Accepts? = null
-    var produces: Produces? = null
+    var accept: Accept? = null
+    var produce: Produce? = null
     var queryCollectionFormat: QueryCollectionFormat? = null
     var schemes: Schemes? = null
     var externalDocsDescription: ExternalDocsDescription? = null
@@ -51,14 +49,46 @@ class Swag {
     var tags: Tags? = null
     var summary: Summary? = null
     var param: Param? = null
-    var success: Success? = null
-    var failure: Response? = null
-    var response: Response? = null
-    var header: Response? = null
+    val successes = mutableListOf<Success>()
+    val failures = mutableListOf<Failure>()
+    val responses = mutableListOf<Response>()
+    val headers = mutableListOf<Header>()
     var router: Router? = null
 
-    fun toOpenApiSpecification(): OpenApiSpecification? {
-        return null
+    fun deprecated(): Boolean {
+        return false
+    }
+
+    fun id(): String {
+        return id?.value ?: ""
+    }
+
+    fun tags(): List<String> {
+        return tags?.values ?: emptyList()
+    }
+
+    fun description(): String {
+        return description?.value ?: ""
+    }
+
+    fun method(): HttpMethod {
+        return router?.method ?: HttpMethod.GET
+    }
+
+    fun path(): String {
+        return router?.path ?: ""
+    }
+
+    fun summary(): String {
+        return summary?.value ?: ""
+    }
+
+    fun tagName(): String {
+        return tagName?.name ?: ""
+    }
+
+    fun tagDescription(): String {
+        return tagDescription?.value ?: ""
     }
 
     class Builder {
@@ -124,12 +154,12 @@ class Swag {
             swag.basePath = BasePath(basePath)
         }
 
-        fun accepts(accepts: List<MimeType>) {
-            swag.accepts = Accepts(accepts)
+        fun accept(accept: MimeType) {
+            swag.accept = Accept(accept)
         }
 
-        fun produces(produces: List<MimeType>) {
-            swag.produces = Produces(produces)
+        fun produce(produce: MimeType) {
+            swag.produce = Produce(produce)
         }
 
         fun queryCollectionFormat(collectionFormat: CollectionFormat) {
@@ -165,19 +195,19 @@ class Swag {
         }
 
         fun success(success: Success) {
-            swag.success = success
+            swag.successes.add(success)
         }
 
-        fun failure(failure: Response) {
-            swag.failure = failure
+        fun failure(failure: Failure) {
+            swag.failures.add(failure)
         }
 
         fun response(response: Response) {
-            swag.response = response
+            swag.responses.add(response)
         }
 
-        fun header(header: Response) {
-            swag.header = header
+        fun header(header: Header) {
+            swag.headers.add(header)
         }
 
         fun router(router: Router) {

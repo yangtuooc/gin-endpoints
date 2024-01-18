@@ -20,7 +20,7 @@ package cn.yangtuooc.swag.specifications.api
 data class Param(
     val name: String,
     val paramIn: ParamIn,
-    val dataType: String,
+    val dataType: DataType,
     val required: Boolean,
     val comment: String,
     val attributes: List<Attribute>
@@ -33,7 +33,7 @@ data class Param(
 class ParamParser(private val content: String) {
     fun parse(): Param {
         val lines = content.split("\n")
-        return Param("", ParamIn.PATH, "", true, "", emptyList())
+        return Param("", ParamIn.PATH, DataType.STRING, true, "", emptyList())
     }
 }
 

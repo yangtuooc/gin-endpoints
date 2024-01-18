@@ -14,11 +14,29 @@
 
 package cn.yangtuooc.swag.specifications.api
 
+import com.intellij.microservices.oas.OasSchemaType
+
 /**
  * @author yangtuo
  */
 enum class DataType {
-    STRING, NUMBER, INTEGER, BOOLEAN, ARRAY, OBJECT, FILE;
+    STRING, NUMBER, INTEGER, BOOLEAN, ARRAY, OBJECT,
+    ;
+
+    fun toOasSchemaType(): OasSchemaType {
+        return when (this) {
+            STRING -> OasSchemaType.STRING
+            NUMBER -> OasSchemaType.NUMBER
+            INTEGER -> OasSchemaType.INTEGER
+            BOOLEAN -> OasSchemaType.BOOLEAN
+            ARRAY -> OasSchemaType.ARRAY
+            OBJECT -> OasSchemaType.OBJECT
+        }
+    }
+
+    fun isReference(): Boolean {
+        return this == OBJECT || this == ARRAY
+    }
 
     companion object {
         fun fromString(value: String): DataType {
@@ -29,7 +47,6 @@ enum class DataType {
                 "boolean" -> BOOLEAN
                 "array" -> ARRAY
                 "object" -> OBJECT
-                "file" -> FILE
                 else -> throw IllegalArgumentException("Unknown data type $value")
             }
         }
