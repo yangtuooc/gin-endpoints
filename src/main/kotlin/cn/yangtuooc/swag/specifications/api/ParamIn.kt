@@ -14,6 +14,8 @@
 
 package cn.yangtuooc.swag.specifications.api
 
+import com.intellij.microservices.oas.OasParameterIn
+
 /**
  * @author yangtuo
  */
@@ -22,8 +24,23 @@ enum class ParamIn {
 
     ;
 
+    fun isRequestBody(): Boolean {
+        return this == BODY || this == FORM
+    }
+
+    fun toOasParameterIn(): OasParameterIn {
+        return when (this) {
+            PATH -> OasParameterIn.PATH
+            QUERY -> OasParameterIn.QUERY
+            HEADER -> OasParameterIn.HEADER
+            COOKIE -> OasParameterIn.COOKIE
+            BODY -> TODO()
+            FORM -> TODO()
+        }
+    }
+
     companion object {
-        fun fromString(value: String): ParamIn {
+        fun from(value: String): ParamIn {
             return when (value) {
                 "path" -> PATH
                 "query" -> QUERY
@@ -35,4 +52,6 @@ enum class ParamIn {
             }
         }
     }
+
+
 }

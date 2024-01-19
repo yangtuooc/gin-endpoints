@@ -20,11 +20,15 @@ package cn.yangtuooc.swag.specifications.api
 data class Param(
     val name: String,
     val paramIn: ParamIn,
-    val dataType: DataType,
+    val dataType: String,
     val required: Boolean,
     val comment: String,
     val attributes: List<Attribute>
 ) {
+    fun deprecated(): Boolean {
+        return false
+    }
+
     companion object {
         const val ANNOTATION = "@param"
     }
@@ -32,10 +36,42 @@ data class Param(
 
 class ParamParser(private val content: String) {
     fun parse(): Param {
-        val lines = content.split("\n")
-        return Param("", ParamIn.PATH, DataType.STRING, true, "", emptyList())
+
+        var parts = content.split("\"")
+        var comment = ""
+        if (parts.size == 2) {
+            comment = parts[1]
+        }
+
+        parts = parts[0].split(Regex("\\s+"))
+        var name = ""
+        var paramIn = ParamIn.QUERY
+        var dataType = ParamDataType.STRING.toString()
+        var required = false
+
+        val attributes = mutableListOf<Attribute>()
+
+        parts.forEachIndexed { index, part ->
+            when (index) {
+                0 -> name = part
+                1 -> paramIn = ParamIn.from(part)
+                2 -> dataType = part
+                3 -> required = part == "true"
+                else -> {
+                    attributePattern.matcher(part).takeIf { it.matches() }?.let {
+                        val attributeName = it.group(1)
+                        val attributeValue = it.group(2)
+                        attributes.add(Attribute(attributeName, attributeValue))
+                    }
+                }
+            }
+        }
+
+        return Param(name, paramIn, dataType, required, comment, attributes)
     }
 }
+
+private val attributePattern = Regex("(\\w+)\\((.*)\\)").toPattern()
 
 data class Attribute(
     val name: String,

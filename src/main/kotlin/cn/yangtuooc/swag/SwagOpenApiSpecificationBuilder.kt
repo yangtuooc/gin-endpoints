@@ -15,6 +15,7 @@
 package cn.yangtuooc.swag
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
+import cn.yangtuooc.swag.specifications.api.ParamDataType
 import cn.yangtuooc.swag.specifications.api.Success
 import com.goide.psi.GoFile
 import com.intellij.microservices.oas.*
@@ -141,6 +142,24 @@ class SwagOpenApiSpecificationBuilder(
     }
 
     private fun buildParameters(): Collection<OasParameter> {
-        return emptyList()
+        val parameters = mutableListOf<OasParameter>()
+        swag.parameters().forEach { param ->
+            if (ParamDataType.isAllowed(param.dataType)) {
+                parameters.add(
+                    OasParameter(
+                        name = param.name,
+                        inPlace = param.paramIn.toOasParameterIn(),
+                        description = param.comment,
+                        isRequired = param.required,
+                        isDeprecated = param.deprecated(),
+                        schema = OasSchema(
+                            type = ParamDataType.from(param.dataType).toOasSchemaType(),
+                        ),
+                        style = null,
+                    )
+                )
+            }
+        }
+        return parameters
     }
 }

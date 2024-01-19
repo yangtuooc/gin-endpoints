@@ -19,40 +19,50 @@ import com.intellij.microservices.oas.OasSchemaType
 /**
  * @author yangtuo
  */
-enum class DataType {
-    STRING, NUMBER, INTEGER, BOOLEAN, ARRAY, OBJECT,
+enum class ParamDataType {
+    STRING, INTEGER, NUMBER, BOOLEAN, FILE, USER_DEFINED
     ;
 
-    fun toOasSchemaType(): OasSchemaType {
+    override fun toString(): String {
         return when (this) {
-            STRING -> OasSchemaType.STRING
-            NUMBER -> OasSchemaType.NUMBER
-            INTEGER -> OasSchemaType.INTEGER
-            BOOLEAN -> OasSchemaType.BOOLEAN
-            ARRAY -> OasSchemaType.ARRAY
-            OBJECT -> OasSchemaType.OBJECT
+            STRING -> "string"
+            INTEGER -> "integer"
+            NUMBER -> "number"
+            BOOLEAN -> "boolean"
+            FILE -> "file"
+            USER_DEFINED -> "user_defined"
         }
     }
 
-    fun isReference(): Boolean {
-        return this == OBJECT || this == ARRAY
+    fun toOasSchemaType(): OasSchemaType? {
+        return when (this) {
+            STRING -> OasSchemaType.STRING
+            INTEGER -> OasSchemaType.INTEGER
+            NUMBER -> OasSchemaType.NUMBER
+            BOOLEAN -> OasSchemaType.BOOLEAN
+            FILE -> OasSchemaType.OBJECT
+            USER_DEFINED -> null
+        }
     }
 
     companion object {
-        fun from(value: String): DataType {
+
+        fun from(value: String): ParamDataType {
             return when (value) {
+                "bool" -> BOOLEAN
+                "int", "uint", "uint32", "uint64" -> INTEGER
+                "float32" -> NUMBER
                 "string" -> STRING
-                "number" -> NUMBER
-                "integer" -> INTEGER
-                "boolean" -> BOOLEAN
-                "array" -> ARRAY
-                "object" -> OBJECT
-                else -> throw IllegalArgumentException("Unknown data type $value")
+                "file" -> FILE
+                else -> USER_DEFINED
             }
         }
 
-        fun isAcceptable(dataType: String): Boolean {
-            return values().any { it.name.equals(dataType, ignoreCase = true) }
+        fun isAllowed(value: String): Boolean {
+            return when (value) {
+                "bool", "float32", "uint64", "uint32", "uint", "int", "string", "integer", "number", "boolean", "file" -> true
+                else -> false
+            }
         }
     }
 }

@@ -48,12 +48,16 @@ class Swag {
     var id: Id? = null
     var tags: Tags? = null
     var summary: Summary? = null
-    var param: Param? = null
+    val params = mutableListOf<Param>()
     val successes = mutableListOf<Success>()
     val failures = mutableListOf<Failure>()
     val responses = mutableListOf<Response>()
     val headers = mutableListOf<Header>()
     var router: Router? = null
+
+    fun parameters(): List<Param> {
+        return params.filter { it.paramIn.isRequestBody().not() }
+    }
 
     fun deprecated(): Boolean {
         return false
@@ -200,7 +204,7 @@ class Swag {
         }
 
         fun param(param: Param) {
-            swag.param = param
+            swag.params.add(param)
         }
 
         fun success(success: Success) {
