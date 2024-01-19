@@ -25,7 +25,7 @@ data class Router(val path: String, val method: HttpMethod) {
 
 class RouterParser(private val content: String) {
 
-    private val pattern = Regex("(/*\\w+)\\s+\\[(\\w+)]").toPattern()
+    private val pattern = Regex("(/*.+/*)\\s+\\[(\\w+)]").toPattern()
 
     fun parse(): Router {
         val matcher = pattern.matcher(content)

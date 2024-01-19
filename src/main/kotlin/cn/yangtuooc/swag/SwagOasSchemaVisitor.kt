@@ -67,6 +67,10 @@ class SwagOasSchemaVisitor : GoRecursiveVisitor() {
         return name ?: ""
     }
 
+    /**
+     * TODO: 完善其他类型的解析
+     * FIXME: time.Time 类型暂时不确定如何解析
+     */
     private fun resolveSchemaType(type: GoType): OasSchemaType {
         return when {
             GoTypeUtil.isIntType(type, type.context) -> OasSchemaType.INTEGER
@@ -74,7 +78,7 @@ class SwagOasSchemaVisitor : GoRecursiveVisitor() {
             GoTypeUtil.isUintType(type, type.context) -> OasSchemaType.INTEGER
             GoTypeUtil.isFloatType(type, type.context) -> OasSchemaType.NUMBER
             GoTypeUtil.isPointer(type, type.context) -> resolveSchemaType((type as GoPointerType).rawType!!)
-            else -> throw IllegalArgumentException("Unknown type: $type")
+            else -> OasSchemaType.STRING
         }
     }
 }

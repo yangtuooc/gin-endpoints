@@ -65,8 +65,12 @@ open class Response(
 
 class ResponseParser(private val content: String) {
 
-    private val pattern = Regex("(\\d+)\\s+\\{(\\w+)}\\s+(\\w+)\\s+\"(.*)\"").toPattern()
-
+    /**
+     * sample: @success 200 {object} User "success"
+     * fixme: 这个正则只能匹配完整的注解，注解可能仅包含部分内容，需要修改正则
+     * e.g. @success 200
+     */
+    private val pattern = Regex("(\\d+)\\s+\\{(\\w+)}\\s+(\\w+\\.*\\w+)\\s+\"(.*)\"").toPattern()
     fun parse(): Response {
         val matcher = pattern.matcher(content)
         if (!matcher.matches()) {
