@@ -17,7 +17,7 @@ package cn.yangtuooc.swag.specifications.api
 /**
  * @author yangtuo
  */
-class Success(code: String, paramType: DataType, dataType: String, comment: String) :
+class Success(code: String, paramType: DataType, dataType: String, comment: String?) :
     Response(code, paramType, dataType, comment) {
 
     companion object {

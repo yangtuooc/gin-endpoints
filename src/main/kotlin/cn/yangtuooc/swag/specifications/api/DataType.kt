@@ -39,7 +39,7 @@ enum class DataType {
     }
 
     companion object {
-        fun fromString(value: String): DataType {
+        fun from(value: String): DataType {
             return when (value) {
                 "string" -> STRING
                 "number" -> NUMBER

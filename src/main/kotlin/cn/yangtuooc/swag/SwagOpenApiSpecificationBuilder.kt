@@ -51,7 +51,7 @@ class SwagOpenApiSpecificationBuilder(
         return listOf(
             OasEndpointPath(
                 path = swag.path(),
-                summary = swag.summary(),
+                summary = null,
                 operations = buildOperations()
             )
         )

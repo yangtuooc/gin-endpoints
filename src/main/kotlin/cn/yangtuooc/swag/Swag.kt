@@ -59,16 +59,16 @@ class Swag {
         return false
     }
 
-    fun id(): String {
-        return id?.value ?: ""
+    fun id(): String? {
+        return id?.value
     }
 
     fun tags(): List<String> {
         return tags?.values ?: emptyList()
     }
 
-    fun description(): String {
-        return description?.value ?: ""
+    fun description(): String? {
+        return description?.value
     }
 
     fun method(): HttpMethod {
@@ -79,8 +79,8 @@ class Swag {
         return router?.path ?: ""
     }
 
-    fun summary(): String {
-        return summary?.value ?: ""
+    fun summary(): String? {
+        return summary?.value
     }
 
     fun tagName(): String {

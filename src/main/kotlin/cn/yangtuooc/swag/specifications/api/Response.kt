@@ -21,7 +21,7 @@ open class Response(
     private val code: String,
     private val paramType: DataType,
     private val dataType: String,
-    private val comment: String
+    private var comment: String?
 ) {
     companion object {
         const val ANNOTATION = "@response"
@@ -39,7 +39,7 @@ open class Response(
         return code
     }
 
-    fun comment(): String {
+    fun comment(): String? {
         return comment
     }
 
@@ -58,8 +58,18 @@ open class Response(
 
 class ResponseParser(private val content: String) {
 
+    private val pattern = Regex("(\\d+)\\s+\\{(\\w+)}\\s+(\\w+)\\s+\"(.*)\"").toPattern()
+
     fun parse(): Response {
-        return Response("200", DataType.STRING, "", "")
+        val matcher = pattern.matcher(content)
+        if (!matcher.matches()) {
+            throw IllegalArgumentException("invalid response: $content")
+        }
+        val code = matcher.group(1)
+        val paramType = DataType.from(matcher.group(2))
+        val dataType = matcher.group(3)
+        val comment = matcher.group(4)
+        return Response(code, paramType, dataType, comment)
     }
 }
 
