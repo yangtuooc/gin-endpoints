@@ -65,18 +65,23 @@ open class Response(
 
 class ResponseParser(private val content: String) {
     fun parse(): Response {
-        val candidates = content.split(" ")
+
+        var comment: String? = null
+        var parts = content.split("\"").filter { it.isNotBlank() }
+        if (parts.size == 2) {
+            comment = parts[1]
+        }
+        parts = parts[0].split(Regex("\\s+"))
+
         var code = "200"
         var paramType: DataType? = null
         var dataType: String? = null
-        var comment: String? = null
 
-        candidates.forEachIndexed { index, candidate ->
+        parts.forEachIndexed { index, part ->
             when (index) {
-                0 -> code = candidate
-                1 -> paramType = candidate.trim('{', '}').let { DataType.from(it) }
-                2 -> dataType = candidate
-                3 -> comment = candidate
+                0 -> code = part
+                1 -> paramType = part.trim('{', '}').let { DataType.from(it) }
+                2 -> dataType = part
             }
         }
 

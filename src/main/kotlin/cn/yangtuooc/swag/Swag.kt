@@ -59,6 +59,10 @@ class Swag {
         return params.filter { it.paramIn.isRequestBody().not() }
     }
 
+    fun requestBody(): Param? {
+        return params.find { it.paramIn.isRequestBody() }
+    }
+
     fun deprecated(): Boolean {
         return false
     }
@@ -101,8 +105,10 @@ class Swag {
         references.addAll(failures.mapNotNull { it.reference() })
         references.addAll(responses.mapNotNull { it.reference() })
         references.addAll(headers.mapNotNull { it.reference() })
+        references.addAll(params.mapNotNull { it.reference() })
         return references
     }
+
 
     class Builder {
         val swag = Swag()

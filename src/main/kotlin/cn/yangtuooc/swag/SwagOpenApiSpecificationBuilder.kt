@@ -16,7 +16,7 @@ package cn.yangtuooc.swag
 
 import cn.yangtuooc.gin.endpoints.GinUrlData
 import cn.yangtuooc.swag.specifications.api.ParamDataType
-import cn.yangtuooc.swag.specifications.api.Success
+import cn.yangtuooc.swag.specifications.api.Response
 import com.goide.psi.GoFile
 import com.intellij.microservices.oas.*
 
@@ -82,7 +82,7 @@ class SwagOpenApiSpecificationBuilder(
                 OasResponse(
                     code = success.code(),
                     description = success.comment(),
-                    content = buildContent()
+                    content = buildContent(success)
                 )
             )
             swag.failures.forEach { failure ->
@@ -90,7 +90,7 @@ class SwagOpenApiSpecificationBuilder(
                     OasResponse(
                         code = failure.code(),
                         description = failure.comment(),
-                        content = buildContent()
+                        content = buildContent(failure)
                     )
                 )
             }
@@ -99,7 +99,7 @@ class SwagOpenApiSpecificationBuilder(
                     OasResponse(
                         code = response.code(),
                         description = response.comment(),
-                        content = buildContent()
+                        content = buildContent(response)
                     )
                 )
             }
@@ -108,7 +108,7 @@ class SwagOpenApiSpecificationBuilder(
                     OasResponse(
                         code = header.code(),
                         description = header.comment(),
-                        content = buildContent()
+                        content = buildContent(header)
                     )
                 )
             }
@@ -116,29 +116,37 @@ class SwagOpenApiSpecificationBuilder(
         return responses
     }
 
-    private fun buildContent(): Map<String, OasMediaTypeObject> {
+    private fun buildContent(response: Response): Map<String, OasMediaTypeObject> {
         val produce = swag.produce ?: return emptyMap()
         val content = mutableMapOf<String, OasMediaTypeObject>()
-        for (success in swag.successes) {
-            if (success.paramType()?.isReference() == true) {
-                val schema = buildReferenceSchema(success)
-                content[produce.toString()] = OasMediaTypeObject(schema, emptyMap())
-            }
+        if (response.paramType()?.isReference() == true) {
+            val schema = buildReferenceSchema(response)
+            content[produce.toString()] = OasMediaTypeObject(schema, emptyMap())
         }
         return content
     }
 
-    private fun buildReferenceSchema(success: Success): OasSchema {
-        val dataType = success.dataType()
+    private fun buildReferenceSchema(response: Response): OasSchema {
+        val dataType = response.dataType()
         return OasSchema(
-            type = success.paramType()?.toOasSchemaType(),
+            type = response.paramType()?.toOasSchemaType(),
             reference = "#/components/schemas/$dataType"
         )
     }
 
 
     private fun buildRequestBody(): OasRequestBody? {
-        return null
+        val body = swag.requestBody() ?: return null
+        val content = mutableMapOf<String, OasSchema>()
+        val schema = OasSchema(
+            type = OasSchemaType.OBJECT,
+            reference = "#/components/schemas/${body.dataType}"
+        )
+        content[body.name] = schema
+        return OasRequestBody(
+            content = content,
+            required = body.required
+        )
     }
 
     private fun buildParameters(): Collection<OasParameter> {

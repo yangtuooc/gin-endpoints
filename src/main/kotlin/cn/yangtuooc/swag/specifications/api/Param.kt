@@ -22,11 +22,18 @@ data class Param(
     val paramIn: ParamIn,
     val dataType: String,
     val required: Boolean,
-    val comment: String,
+    val comment: String?,
     val attributes: List<Attribute>
 ) {
     fun deprecated(): Boolean {
         return false
+    }
+
+    fun reference(): String? {
+        if (!ParamDataType.isAllowed(dataType)) {
+            return dataType
+        }
+        return null
     }
 
     companion object {
@@ -37,13 +44,13 @@ data class Param(
 class ParamParser(private val content: String) {
     fun parse(): Param {
 
-        var parts = content.split("\"")
-        var comment = ""
+        var parts = content.split("\"").filter { it.isNotBlank() }
+        var comment: String? = null
         if (parts.size == 2) {
             comment = parts[1]
         }
-
         parts = parts[0].split(Regex("\\s+"))
+
         var name = ""
         var paramIn = ParamIn.QUERY
         var dataType = ParamDataType.STRING.toString()

@@ -29,7 +29,7 @@ import com.intellij.psi.search.GlobalSearchScopes
 /**
  * @author yangtuo
  */
-class SwagReferenceResolver(val group: GoFile, private val endpoint: GinUrlData) {
+class SwagReferenceResolver(val group: GoFile, endpoint: GinUrlData) {
 
     private val element = endpoint.getDocumentationPsiElement()!!
     fun resolve(references: Set<String>): OasComponents? {
