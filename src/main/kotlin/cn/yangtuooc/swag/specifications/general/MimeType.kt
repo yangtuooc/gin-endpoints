@@ -35,8 +35,8 @@ enum class MimeType(val value: String, val alias: String) {
 
     companion object {
         fun from(value: String): MimeType {
-            return values().firstOrNull { it.value == value }
-                ?: throw IllegalArgumentException("Unknown MimeType $value")
+            values().forEach { if (it.value == value || it.alias == value) return it }
+            throw IllegalArgumentException("Unknown mime type: $value")
         }
     }
 }

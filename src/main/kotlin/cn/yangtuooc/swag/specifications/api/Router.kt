@@ -25,7 +25,15 @@ data class Router(val path: String, val method: HttpMethod) {
 
 class RouterParser(private val content: String) {
 
+    private val pattern = Regex("(/*\\w+)\\s+\\[(\\w+)]").toPattern()
+
     fun parse(): Router {
-        return Router("/", HttpMethod.GET)
+        val matcher = pattern.matcher(content)
+        if (!matcher.matches() || matcher.groupCount() < 2) {
+            throw IllegalArgumentException("Invalid router: $content")
+        }
+        val path = matcher.group(1)
+        val method = HttpMethod.from(matcher.group(2).uppercase())
+        return Router(path, method)
     }
 }

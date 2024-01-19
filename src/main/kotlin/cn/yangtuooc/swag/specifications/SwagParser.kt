@@ -35,7 +35,7 @@ class SwagParser(private val comments: List<PsiComment>) {
     }
 
     private fun processComment(comment: PsiComment) {
-        val text = comment.text.trimStart()
+        val text = comment.text.trimStart('/').trim()
         val matcher = pattern.matcher(text)
         if (!matcher.matches() || matcher.groupCount() < 2) {
             return

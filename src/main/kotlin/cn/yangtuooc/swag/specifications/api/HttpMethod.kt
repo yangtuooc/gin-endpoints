@@ -37,7 +37,7 @@ enum class HttpMethod {
     }
 
     companion object {
-        fun fromString(method: String): HttpMethod {
+        fun from(method: String): HttpMethod {
             return when (method.uppercase()) {
                 "GET" -> GET
                 "POST" -> POST
