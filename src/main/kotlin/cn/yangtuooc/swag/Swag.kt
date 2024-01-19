@@ -91,6 +91,15 @@ class Swag {
         return tagDescription?.value ?: ""
     }
 
+    fun references(): Set<String> {
+        val references = mutableSetOf<String>()
+        references.addAll(successes.mapNotNull { it.reference() })
+        references.addAll(failures.mapNotNull { it.reference() })
+        references.addAll(responses.mapNotNull { it.reference() })
+        references.addAll(headers.mapNotNull { it.reference() })
+        return references
+    }
+
     class Builder {
         val swag = Swag()
 

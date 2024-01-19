@@ -54,6 +54,13 @@ open class Response(
     fun header(): Header {
         return Header(code, paramType, dataType, comment)
     }
+
+    fun reference(): String? {
+        if (paramType().isReference()) {
+            return dataType()
+        }
+        return null
+    }
 }
 
 class ResponseParser(private val content: String) {

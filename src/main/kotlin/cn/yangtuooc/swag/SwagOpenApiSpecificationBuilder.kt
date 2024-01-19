@@ -23,10 +23,11 @@ import com.intellij.microservices.oas.*
  * @author yangtuo
  */
 class SwagOpenApiSpecificationBuilder(
-    private val group: GoFile,
-    private val endpoint: GinUrlData,
+    group: GoFile,
+    endpoint: GinUrlData,
     private val swag: Swag
 ) {
+    private val referenceResolver = SwagReferenceResolver(group, endpoint)
 
     fun build(): OpenApiSpecification {
         return OpenApiSpecification(
@@ -41,7 +42,7 @@ class SwagOpenApiSpecificationBuilder(
     }
 
     private fun buildComponents(): OasComponents? {
-        return null
+        return referenceResolver.resolve(swag.references())
     }
 
     private fun buildPaths(): Collection<OasEndpointPath> {
