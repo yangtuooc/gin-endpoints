@@ -76,15 +76,41 @@ class SwagOpenApiSpecificationBuilder(
 
     private fun buildResponses(): Collection<OasResponse> {
         val responses = mutableListOf<OasResponse>()
-        swag.successes.forEach {
+        swag.successes.forEach { success ->
             responses.add(
                 OasResponse(
-                    code = it.code(),
-                    description = it.comment(),
+                    code = success.code(),
+                    description = success.comment(),
                     content = buildContent()
                 )
             )
-
+            swag.failures.forEach { failure ->
+                responses.add(
+                    OasResponse(
+                        code = failure.code(),
+                        description = failure.comment(),
+                        content = buildContent()
+                    )
+                )
+            }
+            swag.responses.forEach { response ->
+                responses.add(
+                    OasResponse(
+                        code = response.code(),
+                        description = response.comment(),
+                        content = buildContent()
+                    )
+                )
+            }
+            swag.headers.forEach { header ->
+                responses.add(
+                    OasResponse(
+                        code = header.code(),
+                        description = header.comment(),
+                        content = buildContent()
+                    )
+                )
+            }
         }
         return responses
     }
@@ -93,7 +119,7 @@ class SwagOpenApiSpecificationBuilder(
         val produce = swag.produce ?: return emptyMap()
         val content = mutableMapOf<String, OasMediaTypeObject>()
         for (success in swag.successes) {
-            if (success.paramType().isReference()) {
+            if (success.paramType()?.isReference() == true) {
                 val schema = buildReferenceSchema(success)
                 content[produce.toString()] = OasMediaTypeObject(schema, emptyMap())
             }
@@ -104,7 +130,7 @@ class SwagOpenApiSpecificationBuilder(
     private fun buildReferenceSchema(success: Success): OasSchema {
         val dataType = success.dataType()
         return OasSchema(
-            type = success.paramType().toOasSchemaType(),
+            type = success.paramType()?.toOasSchemaType(),
             reference = "#/components/schemas/$dataType"
         )
     }

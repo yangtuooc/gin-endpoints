@@ -50,14 +50,14 @@ class SwagReferenceResolver(val group: GoFile, private val endpoint: GinUrlData)
         return visitor.schema()
     }
 
-    private fun searchScope(endpoint: GinUrlData): GlobalSearchScope {
+    private fun currentDirectoryScope(): GlobalSearchScope {
         val searchDirectory = element.containingFile.containingDirectory
         return GlobalSearchScopes.directoryScope(searchDirectory, true)
     }
 
     private fun findTypeSpec(reference: String): GoTypeSpec {
         if (reference.split(".").size == 1) {
-            return GoTypesIndex.find(reference, group.project, searchScope(endpoint), null).first()
+            return GoTypesIndex.find(reference, group.project, currentDirectoryScope(), null).first()
         }
         val (packageName, typeName) = reference.split(".")
         val import = findImport(packageName)

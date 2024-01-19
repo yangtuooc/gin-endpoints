@@ -19,19 +19,19 @@ package cn.yangtuooc.swag.specifications.api
  */
 open class Response(
     private val code: String,
-    private val paramType: DataType,
-    private val dataType: String,
+    private val paramType: DataType?,
+    private val dataType: String?,
     private var comment: String?
 ) {
     companion object {
         const val ANNOTATION = "@response"
     }
 
-    fun paramType(): DataType {
+    fun paramType(): DataType? {
         return paramType
     }
 
-    fun dataType(): String {
+    fun dataType(): String? {
         return dataType
     }
 
@@ -56,7 +56,7 @@ open class Response(
     }
 
     fun reference(): String? {
-        if (paramType().isReference()) {
+        if (paramType()?.isReference() == true) {
             return dataType()
         }
         return null
@@ -64,22 +64,22 @@ open class Response(
 }
 
 class ResponseParser(private val content: String) {
-
-    /**
-     * sample: @success 200 {object} User "success"
-     * fixme: 这个正则只能匹配完整的注解，注解可能仅包含部分内容，需要修改正则
-     * e.g. @success 200
-     */
-    private val pattern = Regex("(\\d+)\\s+\\{(\\w+)}\\s+(\\w+\\.*\\w+)\\s+\"(.*)\"").toPattern()
     fun parse(): Response {
-        val matcher = pattern.matcher(content)
-        if (!matcher.matches()) {
-            throw IllegalArgumentException("invalid response: $content")
+        val candidates = content.split(" ")
+        var code = "200"
+        var paramType: DataType? = null
+        var dataType: String? = null
+        var comment: String? = null
+
+        candidates.forEachIndexed { index, candidate ->
+            when (index) {
+                0 -> code = candidate
+                1 -> paramType = candidate.trim('{', '}').let { DataType.from(it) }
+                2 -> dataType = candidate
+                3 -> comment = candidate
+            }
         }
-        val code = matcher.group(1)
-        val paramType = DataType.from(matcher.group(2))
-        val dataType = matcher.group(3)
-        val comment = matcher.group(4)
+
         return Response(code, paramType, dataType, comment)
     }
 }
