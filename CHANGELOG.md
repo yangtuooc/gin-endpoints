@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/yangtuooc/gin-endpoints/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2024-04-12)
+
+
+### Bug Fixes
+
+* 解析stcut匿名字段错误 ([0d491b7](https://github.com/yangtuooc/gin-endpoints/commit/0d491b7c758dc45a2f5ac9c9fcc103518d410beb))
+
 # 1.0.0-beta.1 (2024-01-20)
 
 
