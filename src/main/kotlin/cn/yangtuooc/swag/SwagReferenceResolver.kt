@@ -46,7 +46,7 @@ class SwagReferenceResolver(val group: GoFile, endpoint: GinUrlData) {
     private fun processReference(reference: String): OasSchema {
         val typeSpec = findTypeSpec(reference)
         val visitor = SwagOasSchemaVisitor()
-        typeSpec.accept(visitor)
+        typeSpec?.accept(visitor)
         return visitor.schema()
     }
 
@@ -55,9 +55,9 @@ class SwagReferenceResolver(val group: GoFile, endpoint: GinUrlData) {
         return GlobalSearchScopes.directoryScope(searchDirectory, true)
     }
 
-    private fun findTypeSpec(reference: String): GoTypeSpec {
+    private fun findTypeSpec(reference: String): GoTypeSpec? {
         if (reference.split(".").size == 1) {
-            return GoTypesIndex.find(reference, group.project, currentDirectoryScope(), null).first()
+            return GoTypesIndex.find(reference, group.project, currentDirectoryScope(), null).firstOrNull()
         }
         val (packageName, typeName) = reference.split(".")
         val import = findImport(packageName)
@@ -66,7 +66,7 @@ class SwagReferenceResolver(val group: GoFile, endpoint: GinUrlData) {
             val searchScope = GoPackageUtil.packagesScope(packages)
             return GoTypesIndex.find(typeName, group.project, searchScope, null).first()
         }
-        throw IllegalArgumentException("Cannot find type spec for reference: $reference")
+        return null
     }
 
     private fun findImport(packageName: String): GoImportSpec? {

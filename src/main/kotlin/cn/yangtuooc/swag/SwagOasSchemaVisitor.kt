@@ -14,10 +14,7 @@
 
 package cn.yangtuooc.swag
 
-import com.goide.psi.GoFieldDeclaration
-import com.goide.psi.GoPointerType
-import com.goide.psi.GoRecursiveVisitor
-import com.goide.psi.GoType
+import com.goide.psi.*
 import com.goide.psi.impl.GoTypeUtil
 import com.intellij.microservices.oas.OasProperty
 import com.intellij.microservices.oas.OasSchema
@@ -39,7 +36,24 @@ class SwagOasSchemaVisitor : GoRecursiveVisitor() {
         )
     }
 
+    override fun visitAnonymousFieldDefinition(o: GoAnonymousFieldDefinition) {
+        o.typeReferenceExpression?.let {
+            it.resolve()?.let { typeSpec ->
+                val visitor = SwagOasSchemaVisitor()
+                typeSpec.accept(visitor)
+                properties.addAll(visitor.properties)
+            }
+        }
+    }
+
     override fun visitFieldDeclaration(o: GoFieldDeclaration) {
+        if (isAnonymous(o)) {
+            visitAnonymousFieldDefinition(o.anonymousFieldDefinition!!)
+            return
+        }
+        if (isDash(o)) {
+            return
+        }
         val name = resolveName(o)
         val property = OasProperty(
             name = name,
@@ -49,6 +63,14 @@ class SwagOasSchemaVisitor : GoRecursiveVisitor() {
             )
         )
         properties.add(property)
+    }
+
+    private fun isAnonymous(o: GoFieldDeclaration): Boolean {
+        return o.anonymousFieldDefinition != null
+    }
+
+    private fun isDash(o: GoFieldDeclaration): Boolean {
+        return o.tag?.getValue(JSON_TAG)?.contains("-") ?: false
     }
 
     private fun isRequired(o: GoFieldDeclaration): Boolean {

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "cn.yangtuooc"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ intellij {
 }
 
 dependencies {
-    implementation("com.strumenta:antlr-kotlin-runtime:0.1.0-RC14")
+
 }
 
 idea {
@@ -52,8 +52,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("222")
-        untilBuild.set("232.*")
+        sinceBuild.set("232")
+        untilBuild.set("241.*")
     }
 
     signPlugin {
